@@ -1,6 +1,6 @@
 function login() {
-  let username = document.getElementById("username").value;
-  let password = document.getElementById("password").value;
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
 
   fetch("https://web-game-backend.onrender.com/login", {
     method: "POST",
@@ -15,7 +15,10 @@ function login() {
       localStorage.setItem("user", username);
       window.location.href = "home.html";
     } else {
-      alert("Login failed");
+      alert("Wrong username or password");
     }
+  })
+  .catch(() => {
+    alert("Backend waking up, try again in 30 seconds");
   });
 }
