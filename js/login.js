@@ -1,11 +1,21 @@
 function login() {
-    let username = document.getElementById("username").value;
-    let password = document.getElementById("password").value;
+  let username = document.getElementById("username").value;
+  let password = document.getElementById("password").value;
 
-    // Temporary login (learning purpose)
-    if (username === "admin" && password === "1234") {
-        window.location.href = "home.html";
+  fetch("https://web-game-backend.onrender.com/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ username, password })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      localStorage.setItem("user", username);
+      window.location.href = "home.html";
     } else {
-        alert("Wrong Username or Password");
+      alert("Login failed");
     }
+  });
 }
