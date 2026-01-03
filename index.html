@@ -11,3 +11,38 @@ function login() {
 }
 </script>
 
+<script>
+function login() {
+  const username = document.getElementById("username").value;
+  const password = document.getElementById("password").value;
+
+  fetch("https://web-game-backend.onrender.com/login", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ username, password })
+  })
+  .then(res => {
+    if (!res.ok) {
+      throw new Error("Server response error");
+    }
+    return res.json();
+  })
+  .then(data => {
+    console.log("Backend response:", data);
+
+    if (data.success) {
+      localStorage.setItem("user", username);
+      window.location.href = "home.html";
+    } else {
+      alert("Login failed: wrong username or password");
+    }
+  })
+  .catch(err => {
+    console.error("LOGIN ERROR:", err);
+    alert("Backend connection failed. Try again in 1 minute.");
+  });
+}
+</script>
+
