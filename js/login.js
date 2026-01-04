@@ -2,7 +2,7 @@ function login() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
-  fetch("https://web-game-backend.onrender.com/login", {
+  fetch("https://web-game-backend-18mn.onrender.com/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
