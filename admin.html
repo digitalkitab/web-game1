@@ -2,20 +2,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Admin - Forgot Requests</title>
+<title>Admin Panel</title>
 <style>
-body{
-  background:black;
-  color:white;
-  font-family:Arial;
-  padding:20px;
-}
-button{ cursor:pointer; }
-.card{
-  border:1px solid cyan;
-  padding:10px;
-  margin:10px 0;
-}
+body{ background:black; color:white; font-family:Arial; padding:20px; }
+.card{ border:1px solid cyan; padding:10px; margin:10px 0; }
+input,button{ margin-top:5px; }
 </style>
 </head>
 <body>
@@ -27,32 +18,26 @@ button{ cursor:pointer; }
 const API="https://web-game-backend-18mn.onrender.com";
 
 async function load(){
-  const res = await fetch(API+"/admin/forgot-requests");
-  const data = await res.json();
-
-  const list = document.getElementById("list");
+  const r=await fetch(API+"/admin/forgot-requests");
+  const d=await r.json();
   list.innerHTML="";
-
-  data.forEach((r,i)=>{
-    const d=document.createElement("div");
-    d.className="card";
-    d.innerHTML=`
-      <b>User:</b> ${r.username}<br>
-      <b>Time:</b> ${r.time}<br>
-      <b>Status:</b> ${r.status}<br>
-      <button onclick="done(${i})">Mark Done</button>
+  d.forEach(req=>{
+    const div=document.createElement("div");
+    div.className="card";
+    div.innerHTML=`
+      User: ${req.username}<br>
+      Time: ${req.time}<br>
+      <input placeholder="New Password" id="p_${req.username}">
+      <button onclick="reset('${req.username}')">Reset</button>
     `;
-    list.appendChild(d);
+    list.appendChild(div);
   });
 }
 
-async function done(i){
-  await fetch(API+"/admin/forgot-done",{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({ index:i })
-  });
-  load();
+async function reset(u){
+  const np=document.getElementById("p_"+u).value;
+  await fetch(API+"/admin/reset-password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:u,newPassword:np})});
+  alert("Password reset for "+u);
 }
 
 load();
