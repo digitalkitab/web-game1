@@ -4,97 +4,228 @@
 <meta charset="UTF-8">
 <title>Game Login</title>
 <style>
-body{
-  background:#020617;
-  color:white;
-  font-family:Arial;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-.box{
-  width:300px;
-  padding:20px;
-  border:2px solid cyan;
-  box-shadow:0 0 20px cyan;
-  text-align:center;
-}
-input,button{
-  width:100%;
-  padding:10px;
-  margin-top:8px;
-}
-button{ cursor:pointer; }
-.link{
-  font-size:12px;
-  cursor:pointer;
-  margin-top:8px;
-}
-.hidden{ display:none; }
+  body {
+    background: #020617;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+  .box {
+    width: 300px;
+    padding: 20px;
+    border: 2px solid cyan;
+    box-shadow: 0 0 20px cyan;
+    text-align: center;
+    border-radius: 10px;
+    background-color: rgba(2, 6, 23, 0.9);
+  }
+  input, button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    box-sizing: border-box; /* Fix padding issues */
+    border-radius: 5px;
+    border: none;
+  }
+  input {
+    background: #1e293b;
+    color: white;
+    border: 1px solid #334155;
+  }
+  button {
+    cursor: pointer;
+    background-color: cyan;
+    color: #020617;
+    font-weight: bold;
+    transition: 0.3s;
+  }
+  button:hover {
+    background-color: #22d3ee;
+    box-shadow: 0 0 10px cyan;
+  }
+  .link {
+    font-size: 13px;
+    cursor: pointer;
+    margin-top: 15px;
+    color: cyan;
+    text-decoration: underline;
+  }
+  .link:hover {
+    color: white;
+  }
+  .hidden { display: none; }
+  #lm, #sm, #fm {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #ff4d4d; /* Default error color */
+  }
+  .success-msg {
+    color: #4dff4d !important;
+  }
 </style>
 </head>
 <body>
 
 <div class="box" id="loginBox">
   <h2>LOGIN</h2>
-  <input id="lu" placeholder="Username">
+  <input id="lu" type="text" placeholder="Username">
   <input id="lp" type="password" placeholder="Password">
   <button onclick="login()">Login</button>
-  <div class="link" onclick="showSignup()">Create Account</div>
-  <div class="link" onclick="showForgot()">Forgot Password</div>
+  
+  <div style="display:flex; justify-content:space-between; margin-top:10px;">
+    <div class="link" onclick="showSignup()">Create Account</div>
+    <div class="link" onclick="showForgot()">Forgot Password</div>
+  </div>
   <div id="lm"></div>
 </div>
 
 <div class="box hidden" id="signupBox">
   <h2>CREATE ACCOUNT</h2>
-  <input id="su" placeholder="Username">
+  <input id="su" type="text" placeholder="Username">
   <input id="sp" type="password" placeholder="Password">
   <button onclick="signup()">Sign Up</button>
-  <div class="link" onclick="showLogin()">Back</div>
+  <div class="link" onclick="showLogin()">Back to Login</div>
   <div id="sm"></div>
 </div>
 
 <div class="box hidden" id="forgotBox">
   <h2>FORGOT PASSWORD</h2>
-  <input id="fu" placeholder="Username">
+  <input id="fu" type="text" placeholder="Username">
   <button onclick="forgot()">Send Request</button>
-  <div class="link" onclick="showLogin()">Back</div>
+  <div class="link" onclick="showLogin()">Back to Login</div>
   <div id="fm"></div>
 </div>
 
 <script>
-const API="https://web-game-backend-18mn.onrender.com";
+// NOTE: Make sure your backend allows CORS and is running.
+const API = "https://web-game-backend-18mn.onrender.com"; 
 
+// --- UI Toggle Functions ---
 function showLogin(){
-  loginBox.classList.remove("hidden");
-  signupBox.classList.add("hidden");
-  forgotBox.classList.add("hidden");
+  document.getElementById("loginBox").classList.remove("hidden");
+  document.getElementById("signupBox").classList.add("hidden");
+  document.getElementById("forgotBox").classList.add("hidden");
+  clearMessages();
 }
+
 function showSignup(){
-  loginBox.classList.add("hidden");
-  signupBox.classList.remove("hidden");
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("signupBox").classList.remove("hidden");
+  clearMessages();
 }
+
 function showForgot(){
-  loginBox.classList.add("hidden");
-  forgotBox.classList.remove("hidden");
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("forgotBox").classList.remove("hidden");
+  clearMessages();
 }
+
+function clearMessages() {
+    document.getElementById("lm").innerText = "";
+    document.getElementById("sm").innerText = "";
+    document.getElementById("fm").innerText = "";
+}
+
+// --- Logic Functions ---
 
 async function login(){
-  const r=await fetch(API+"/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:lu.value,password:lp.value})});
-  const d=await r.json();
-  lm.innerText=d.success?"Login Successful":"Invalid Login";
+  const u = document.getElementById("lu").value;
+  const p = document.getElementById("lp").value;
+  const msgBox = document.getElementById("lm");
+
+  if(!u || !p) {
+      msgBox.innerText = "Please fill all fields";
+      return;
+  }
+
+  msgBox.innerText = "Checking...";
+  msgBox.className = "";
+
+  try {
+      const r = await fetch(API+"/login", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({username: u, password: p})
+      });
+      
+      const d = await r.json();
+
+      if(d.success) {
+          msgBox.innerText = "Login Successful! Redirecting...";
+          msgBox.className = "success-msg";
+          
+          // --- REDIRECTION LOGIC ---
+          setTimeout(() => {
+              // Yahan par apne homepage ka naam likhein
+              window.location.href = "home.html"; 
+          }, 1500);
+      } else {
+          msgBox.innerText = d.message || "Invalid Username or Password";
+      }
+  } catch(err) {
+      console.error(err);
+      msgBox.innerText = "Server Error. Try again later.";
+  }
 }
 
 async function signup(){
-  const r=await fetch(API+"/signup",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:su.value,password:sp.value})});
-  const d=await r.json();
-  sm.innerText=d.success?"Account Created":"Signup Failed";
+  const u = document.getElementById("su").value;
+  const p = document.getElementById("sp").value;
+  const msgBox = document.getElementById("sm");
+
+  if(!u || !p) {
+      msgBox.innerText = "Please fill all fields";
+      return;
+  }
+
+  msgBox.innerText = "Creating account...";
+  
+  try {
+      const r = await fetch(API+"/signup", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({username: u, password: p})
+      });
+      const d = await r.json();
+
+      if(d.success) {
+          msgBox.innerText = "Account Created! Please Login.";
+          msgBox.className = "success-msg";
+          setTimeout(() => {
+              showLogin(); // Wapas login page par bhej dega
+          }, 2000);
+      } else {
+          msgBox.innerText = d.message || "Signup Failed";
+      }
+  } catch(err) {
+      msgBox.innerText = "Server Error.";
+  }
 }
 
 async function forgot(){
-  await fetch(API+"/forgot-password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:fu.value})});
-  fm.innerText="Request sent to admin";
+  const u = document.getElementById("fu").value;
+  const msgBox = document.getElementById("fm");
+
+  if(!u) {
+      msgBox.innerText = "Enter username";
+      return;
+  }
+
+  try {
+      await fetch(API+"/forgot-password", {
+          method: "POST",
+          headers: {"Content-Type":"application/json"},
+          body: JSON.stringify({username: u})
+      });
+      msgBox.innerText = "Request sent to admin (if user exists).";
+      msgBox.className = "success-msg";
+  } catch(err) {
+      msgBox.innerText = "Network Error.";
+  }
 }
 </script>
 
