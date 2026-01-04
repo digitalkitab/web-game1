@@ -10,13 +10,17 @@
 <ul id="list"></ul>
 
 <script>
-fetch("https://web-game-backend.onrender.com/leaderboard")
+fetch("https://web-game-backend-18mn.onrender.com/leaderboard")
   .then(res => res.json())
   .then(data => {
     let list = document.getElementById("list");
+    list.innerHTML = "";
     data.forEach((u, i) => {
-      list.innerHTML += `<li>${i+1}. ${u.username} - ${u.highScore}</li>`;
+      list.innerHTML += `<li>${i + 1}. ${u.username} - ${u.highScore}</li>`;
     });
+  })
+  .catch(() => {
+    alert("Leaderboard load nahi ho raha");
   });
 </script>
 
