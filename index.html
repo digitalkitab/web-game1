@@ -1,21 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Login | Web Game</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<h1 class="title">🎮 Web Game Login</h1>
+  <h1 class="title">🎮 Web Game Login</h1>
 
-<div class="login-box">
-  <input id="username" placeholder="Username">
-  <input id="password" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-</div>
+  <div class="login-box">
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
+    <button onclick="login()">Login</button>
+  </div>
 
-<p class="footer">© 2026 Web Game</p>
+  <p class="footer">© 2026 Web Game</p>
 
-<script src="js/login.js"></script>
+  <script>
+    function login() {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      fetch("https://web-game-backend-18mn.onrender.com/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          username: username,
+          password: password
+        })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          localStorage.setItem("user", username);
+          window.location.href = "home.html";
+        } else {
+          alert("Wrong username or password");
+        }
+      })
+      .catch(() => {
+        alert("Backend waking up, try again in 30 seconds");
+      });
+    }
+  </script>
+
 </body>
 </html>
