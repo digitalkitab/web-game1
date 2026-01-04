@@ -20,7 +20,7 @@ body{
   align-items:center;
 }
 
-/* Futuristic frame */
+/* Frame */
 .frame{
   width:600px;
   height:300px;
@@ -30,7 +30,7 @@ body{
   box-shadow:0 0 30px #00ffff55;
 }
 
-/* inner lines */
+/* FIX: invisible layers should NOT block clicks */
 .frame::before,
 .frame::after{
   content:"";
@@ -38,6 +38,7 @@ body{
   inset:10px;
   border:1px solid #00ffff;
   opacity:0.4;
+  pointer-events:none; /* 🔥 THIS IS THE FIX */
 }
 
 /* Login box */
@@ -47,6 +48,8 @@ body{
   margin-top:40px;
   text-align:center;
   color:#e5e7eb;
+  position:relative;
+  z-index:2;
 }
 
 .login-box h2{
@@ -63,6 +66,7 @@ body{
   border:none;
   outline:none;
   border-radius:3px;
+  font-size:14px;
 }
 
 /* Buttons */
