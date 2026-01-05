@@ -1,58 +1,101 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Home | Web Game</title>
-    <link rel="stylesheet" href="css/style.css">
-</head>
-
-<body>
-
-    <!-- TOP --><!DOCTYPE html>
-<html>
-<head>
-  <title>Home</title>
-  <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sikkim – Home</title>
+  <link rel="stylesheet" href="css/home.css" />
 </head>
 <body>
 
-<h1 class="title">Welcome 🎉</h1>
+<!-- HEADER -->
+<header class="header">
+  <div class="logo">SIKKIM</div>
+  <div class="auth-buttons">
+    <button class="btn login">Log in</button>
+    <button class="btn register">Register</button>
+  </div>
+</header>
 
-<div class="menu">
-  <button onclick="location.href='game1.html'">🎯 Click Game</button>
-  <button onclick="location.href='leaderboard.html'">🏆 Leaderboard</button>
-</div>
+<!-- BANNER / SLIDER -->
+<section class="banner">
+  <img src="images/banner1.jpg" alt="Banner" />
+</section>
 
-<button onclick="location.href='index.html'">Logout</button>
+<!-- NOTICE -->
+<section class="notice">
+  <div class="notice-text">
+    🔊 Welcome to SIKKIM game platform, we will serve you wholeheartedly!
+  </div>
+  <button class="detail-btn">Detail</button>
+</section>
 
-</body>
-</html>
+<!-- GAME CATEGORIES -->
+<section class="categories">
+  <div class="category">
+    <img src="images/lottery.png" />
+    <span>Lottery</span>
+  </div>
+  <div class="category">
+    <img src="images/original.png" />
+    <span>Original</span>
+  </div>
+  <div class="category">
+    <img src="images/slots.png" />
+    <span>Slots</span>
+  </div>
+  <div class="category">
+    <img src="images/fishing.png" />
+    <span>Fishing</span>
+  </div>
+</section>
 
-    <h1 class="title">Welcome, Player 🎉</h1>
+<!-- LOTTERY SECTION -->
+<section class="section">
+  <div class="section-header">
+    <h3>Lottery</h3>
+    <a href="#">More ></a>
+  </div>
 
-    <!-- CENTER -->
-    <div style="display:flex; justify-content:center; gap:40px; margin-top:80px;">
-
-        <!-- LEFT GAME -->
-        <div class="login-box">
-            <h2>🎯 Click Game</h2>
-            <p>Simple clicking game</p>
-            <button onclick="location.href='game1.html'">Play</button>
-        </div>
-
-        <!-- RIGHT GAME -->
-        <div class="login-box">
-            <h2>🧠 Guess Game</h2>
-            <p>Guess the number</p>
-            <button>Coming Soon</button>
-        </div>
-
+  <div class="game-grid">
+    <div class="game-card">
+      <h4>WinGo</h4>
+      <img src="images/wingo.png" />
     </div>
+    <div class="game-card">
+      <h4>K3</h4>
+      <img src="images/k3.png" />
+    </div>
+    <div class="game-card">
+      <h4>5D</h4>
+      <img src="images/5d.png" />
+    </div>
+  </div>
+</section>
 
-    <!-- BOTTOM -->
-    <p class="footer">
-        <button onclick="location.href='index.html'">Logout</button>
-    </p>
+<!-- ORIGINAL GAMES -->
+<section class="section">
+  <h3>Original</h3>
+  <div class="game-grid">
+    <div class="game-card">
+      <img src="images/aviator.png" />
+      <span>Aviator</span>
+    </div>
+    <div class="game-card">
+      <img src="images/boom.png" />
+      <span>Boom</span>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <div class="nav-item active">Home</div>
+  <div class="nav-item">Activity</div>
+  <div class="nav-item center">🎮</div>
+  <div class="nav-item">Wallet</div>
+  <div class="nav-item">Account</div>
+</nav>
 
 </body>
 </html>
-
