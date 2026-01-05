@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WEB GAME - Login</title>
+    <title>WEB GAME - Home</title>
     <style>
         * {
             margin: 0;
@@ -12,226 +12,421 @@
         }
 
         body {
-            font-family: 'Courier New', monospace;
-            background: linear-gradient(135deg, #0a0e27 0%, #000000 100%);
-            min-height: 100vh;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f5f7fa;
+            padding-bottom: 80px;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 20px;
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            color: #00ffff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .logo-text {
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .balance {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .banner-container {
+            padding: 20px;
             overflow: hidden;
         }
 
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(0, 100, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 80% 50%, rgba(0, 255, 255, 0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-
-        .game-title {
-            position: absolute;
-            top: 40px;
-            font-size: 48px;
-            font-weight: bold;
-            letter-spacing: 8px;
-            text-shadow: 
-                0 0 10px #00ffff,
-                0 0 20px #00ffff,
-                0 0 30px #00ffff,
-                0 0 40px #0080ff;
-            animation: titleGlow 2s ease-in-out infinite alternate;
-        }
-
-        @keyframes titleGlow {
-            from {
-                text-shadow: 
-                    0 0 10px #00ffff,
-                    0 0 20px #00ffff,
-                    0 0 30px #00ffff,
-                    0 0 40px #0080ff;
-            }
-            to {
-                text-shadow: 
-                    0 0 20px #00ffff,
-                    0 0 30px #00ffff,
-                    0 0 40px #00ffff,
-                    0 0 50px #0080ff,
-                    0 0 60px #0080ff;
-            }
-        }
-
-        .login-container {
-            position: relative;
-            background: rgba(10, 14, 39, 0.8);
-            padding: 50px 40px;
-            border: 2px solid #00ffff;
-            border-radius: 15px;
-            box-shadow: 
-                0 0 20px rgba(0, 255, 255, 0.5),
-                inset 0 0 20px rgba(0, 255, 255, 0.1);
-            width: 400px;
-            backdrop-filter: blur(10px);
-        }
-
-        .login-container::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(45deg, #00ffff, #0080ff, #00ffff);
-            border-radius: 15px;
-            z-index: -1;
-            opacity: 0.3;
-            filter: blur(10px);
-        }
-
-        .input-group {
-            margin-bottom: 25px;
-        }
-
-        .input-group input {
-            width: 100%;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 2px solid #00ffff;
-            border-radius: 8px;
-            color: #00ffff;
-            font-size: 16px;
-            font-family: 'Courier New', monospace;
-            outline: none;
-            transition: all 0.3s ease;
-            box-shadow: 
-                0 0 10px rgba(0, 255, 255, 0.3),
-                inset 0 0 10px rgba(0, 255, 255, 0.1);
-        }
-
-        .input-group input::placeholder {
-            color: rgba(0, 255, 255, 0.5);
-        }
-
-        .input-group input:focus {
-            border-color: #00ffff;
-            box-shadow: 
-                0 0 20px rgba(0, 255, 255, 0.6),
-                inset 0 0 15px rgba(0, 255, 255, 0.2);
-        }
-
-        .button-group {
+        .banner-slider {
             display: flex;
+            transition: transform 0.5s ease;
             gap: 15px;
-            margin-top: 30px;
         }
 
-        button {
-            flex: 1;
-            padding: 15px;
-            background: rgba(0, 0, 0, 0.6);
-            border: 2px solid #00ffff;
-            border-radius: 8px;
-            color: #00ffff;
-            font-size: 16px;
-            font-weight: bold;
-            font-family: 'Courier New', monospace;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+        .banner-slide {
+            min-width: 100%;
+            height: 160px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
         }
 
-        button:hover {
-            background: rgba(0, 255, 255, 0.2);
-            box-shadow: 
-                0 0 25px rgba(0, 255, 255, 0.8),
-                inset 0 0 15px rgba(0, 255, 255, 0.3);
-            transform: translateY(-2px);
+        .banner-slide:nth-child(2) {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         }
 
-        button:active {
-            transform: translateY(0);
+        .banner-slide:nth-child(3) {
+            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
         }
 
-        .message {
-            margin-top: 20px;
-            text-align: center;
+        .slider-dots {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 15px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #ccc;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: #667eea;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        .notice-bar {
+            margin: 0 20px;
+            background: #fff3cd;
+            border-radius: 10px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .speaker-icon {
+            width: 20px;
+            height: 20px;
+            background: #ff9800;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .notice-text {
             font-size: 14px;
-            color: #00ffff;
-            min-height: 20px;
-            text-shadow: 0 0 5px #00ffff;
+            color: #856404;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .categories {
+            display: flex;
+            justify-content: space-around;
+            padding: 25px 20px;
+            background: white;
+            margin: 20px 20px 0;
+            border-radius: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .category-name {
+            font-size: 12px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .section-title {
+            padding: 25px 20px 15px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            padding: 0 20px 30px;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .game-card:active {
+            transform: scale(0.95);
+        }
+
+        .game-image {
+            width: 100%;
+            height: 120px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .game-card:nth-child(2) .game-image {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .game-card:nth-child(3) .game-image {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .game-card:nth-child(4) .game-image {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+        }
+
+        .game-info {
+            padding: 12px;
+        }
+
+        .game-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .game-rtp {
+            font-size: 12px;
+            color: #28a745;
+            font-weight: 500;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            color: #999;
+            font-size: 11px;
+            cursor: pointer;
+            flex: 1;
+            padding: 5px 0;
+        }
+
+        .nav-item.active {
+            color: #667eea;
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+            background: #e0e0e0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .nav-item.active .nav-icon {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-item.center {
+            margin-top: -20px;
+        }
+
+        .nav-item.center .nav-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 28px;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
         }
     </style>
 </head>
 <body>
-    <div class="game-title">WEB GAME</div>
-    
-    <div class="login-container">
-        <div class="input-group">
-            <input type="text" id="username" placeholder="USERNAME" autocomplete="off">
+    <div class="header">
+        <div class="logo-text">WEB GAME</div>
+        <div class="balance">₹ 10,000.00</div>
+    </div>
+
+    <div class="banner-container">
+        <div class="banner-slider" id="bannerSlider">
+            <div class="banner-slide">VIP BONUS</div>
+            <div class="banner-slide">WELCOME OFFER</div>
+            <div class="banner-slide">HOT PROMOTION</div>
         </div>
-        
-        <div class="input-group">
-            <input type="password" id="password" placeholder="PASSWORD" autocomplete="off">
+        <div class="slider-dots">
+            <div class="dot active"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
         </div>
-        
-        <div class="button-group">
-            <button id="loginBtn">Login</button>
-            <button id="signupBtn">Sign Up</button>
+    </div>
+
+    <div class="notice-bar">
+        <div class="speaker-icon">📢</div>
+        <div class="notice-text">Welcome to WEB GAME platform</div>
+    </div>
+
+    <div class="categories">
+        <div class="category-item">
+            <div class="category-icon">🎰</div>
+            <div class="category-name">Lottery</div>
         </div>
-        
-        <div class="message" id="message"></div>
+        <div class="category-item">
+            <div class="category-icon">🎮</div>
+            <div class="category-name">Original</div>
+        </div>
+        <div class="category-item">
+            <div class="category-icon">🎪</div>
+            <div class="category-name">Slots</div>
+        </div>
+        <div class="category-item">
+            <div class="category-icon">🎣</div>
+            <div class="category-name">Fishing</div>
+        </div>
+    </div>
+
+    <div class="section-title">Recommended Games</div>
+
+    <div class="games-grid">
+        <div class="game-card">
+            <div class="game-image">✈️ AVIATOR</div>
+            <div class="game-info">
+                <div class="game-name">Aviator</div>
+                <div class="game-rtp">RTP 97%</div>
+            </div>
+        </div>
+
+        <div class="game-card">
+            <div class="game-image">🎯 WINGO</div>
+            <div class="game-info">
+                <div class="game-name">WinGo</div>
+                <div class="game-rtp">RTP 96.5%</div>
+            </div>
+        </div>
+
+        <div class="game-card">
+            <div class="game-image">🎲 K3</div>
+            <div class="game-info">
+                <div class="game-name">K3</div>
+                <div class="game-rtp">RTP 98%</div>
+            </div>
+        </div>
+
+        <div class="game-card">
+            <div class="game-image">🔢 5D</div>
+            <div class="game-info">
+                <div class="game-name">5D</div>
+                <div class="game-rtp">RTP 97.5%</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active">
+            <div class="nav-icon">🏠</div>
+            <div>Home</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">🎁</div>
+            <div>Activity</div>
+        </div>
+        <div class="nav-item center">
+            <div class="nav-icon">🎮</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">🎉</div>
+            <div>Promotion</div>
+        </div>
+        <div class="nav-item">
+            <div class="nav-icon">👤</div>
+            <div>Account</div>
+        </div>
     </div>
 
     <script>
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        const loginBtn = document.getElementById('loginBtn');
-        const signupBtn = document.getElementById('signupBtn');
-        const message = document.getElementById('message');
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.banner-slide');
+        const dots = document.querySelectorAll('.dot');
+        const slider = document.getElementById('bannerSlider');
 
-        loginBtn.addEventListener('click', () => {
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
+        function showSlide(index) {
+            currentSlide = index;
+            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
             
-            if (!username || !password) {
-                message.textContent = 'Please enter credentials';
-                return;
-            }
-            
-            message.textContent = `Welcome back, ${username}!`;
-            setTimeout(() => {
-                message.textContent = 'ACCESS GRANTED';
-            }, 1000);
+            dots.forEach((dot, i) => {
+                dot.classList.toggle('active', i === currentSlide);
+            });
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        setInterval(nextSlide, 3000);
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showSlide(index));
         });
 
-        signupBtn.addEventListener('click', () => {
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
-            
-            if (!username || !password) {
-                message.textContent = 'Please enter credentials';
-                return;
-            }
-            
-            message.textContent = `Account created for ${username}!`;
-            setTimeout(() => {
-                message.textContent = 'REGISTRATION COMPLETE';
-            }, 1000);
-        });
-
-        passwordInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                loginBtn.click();
-            }
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navItems.forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+            });
         });
     </script>
 </body>
