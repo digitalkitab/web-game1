@@ -4,46 +4,10 @@
 <meta charset="UTF-8">
 <title>Game Login</title>
 
-<style>
-body{
-  background:#020617;
-  color:white;
-  font-family:Arial;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-.box{
-  width:300px;
-  padding:20px;
-  border:2px solid cyan;
-  box-shadow:0 0 20px cyan;
-  text-align:center;
-}
-input,button{
-  width:100%;
-  padding:10px;
-  margin-top:8px;
-}
-button{
-  cursor:pointer;
-  background:cyan;
-  border:none;
-  font-weight:bold;
-}
-.link{
-  font-size:12px;
-  cursor:pointer;
-  margin-top:8px;
-  color:#67e8f9;
-}
-.hidden{
-  display:none;
-}
-</style>
-</head>
+<!-- ✅ SAFE CSS LINK -->
+<link rel="stylesheet" href="./home.css">
 
+</head>
 <body>
 
 <div class="box" id="loginBox">
@@ -104,8 +68,13 @@ async function login(){
     })
   });
   const d = await r.json();
-  document.getElementById("lm").innerText =
-    d.success ? "Login Successful" : "Invalid Login";
+
+  if(d.success){
+    // ✅ STEP 3: redirect
+    window.location.href = "home.html";
+  }else{
+    document.getElementById("lm").innerText = "Invalid Login";
+  }
 }
 
 async function signup(){
