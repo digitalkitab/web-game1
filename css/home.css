@@ -1,0 +1,147 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: system-ui, sans-serif;
+}
+
+body {
+  background: #f4f6fb;
+  padding-bottom: 70px;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: #fff;
+}
+
+.logo {
+  font-weight: 700;
+  color: #2563eb;
+  font-size: 20px;
+}
+
+.auth-buttons .btn {
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  margin-left: 6px;
+}
+
+.login {
+  background: #2563eb;
+  color: #fff;
+}
+
+.register {
+  background: #fff;
+  border: 1px solid #2563eb;
+  color: #2563eb;
+}
+
+/* BANNER */
+.banner img {
+  width: 100%;
+  border-radius: 12px;
+  margin: 12px;
+}
+
+/* NOTICE */
+.notice {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  margin: 12px;
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.detail-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+}
+
+/* CATEGORIES */
+.categories {
+  display: flex;
+  justify-content: space-around;
+  margin: 12px 0;
+}
+
+.category {
+  text-align: center;
+  font-size: 12px;
+}
+
+.category img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+}
+
+/* SECTION */
+.section {
+  background: #fff;
+  margin: 12px;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+/* GAME GRID */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.game-card {
+  background: #f1f5f9;
+  border-radius: 10px;
+  padding: 8px;
+  text-align: center;
+}
+
+.game-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+/* BOTTOM NAV */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+  border-top: 1px solid #ddd;
+}
+
+.nav-item {
+  font-size: 12px;
+  color: #666;
+}
+
+.nav-item.active {
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.nav-item.center {
+  font-size: 20px;
+}
