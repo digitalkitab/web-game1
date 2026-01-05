@@ -1,108 +1,174 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Game Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB GAME - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-<!-- ✅ SAFE CSS LINK -->
-<link rel="stylesheet" href="./home.css">
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
 
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .logo h1 {
+            font-size: 32px;
+            font-weight: 700;
+            color: #667eea;
+            letter-spacing: 2px;
+        }
+
+        .logo p {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input-group input:focus {
+            border-color: #667eea;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: transform 0.2s;
+        }
+
+        .login-btn:active {
+            transform: scale(0.98);
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .signup-link a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+            min-height: 20px;
+        }
+    </style>
 </head>
 <body>
+    <div class="login-container">
+        <div class="logo">
+            <h1>WEB GAME</h1>
+            <p>Welcome Back</p>
+        </div>
 
-<div class="box" id="loginBox">
-  <h2>LOGIN</h2>
-  <input id="lu" placeholder="Username">
-  <input id="lp" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-  <div class="link" onclick="showSignup()">Create Account</div>
-  <div class="link" onclick="showForgot()">Forgot Password</div>
-  <div id="lm"></div>
-</div>
+        <div class="input-group">
+            <label>Username</label>
+            <input type="text" id="username" placeholder="Enter username">
+        </div>
 
-<div class="box hidden" id="signupBox">
-  <h2>CREATE ACCOUNT</h2>
-  <input id="su" placeholder="Username">
-  <input id="sp" type="password" placeholder="Password">
-  <button onclick="signup()">Sign Up</button>
-  <div class="link" onclick="showLogin()">Back</div>
-  <div id="sm"></div>
-</div>
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" id="password" placeholder="Enter password">
+        </div>
 
-<div class="box hidden" id="forgotBox">
-  <h2>FORGOT PASSWORD</h2>
-  <input id="fu" placeholder="Username">
-  <button onclick="forgot()">Send Request</button>
-  <div class="link" onclick="showLogin()">Back</div>
-  <div id="fm"></div>
-</div>
+        <div class="error-message" id="errorMsg"></div>
 
-<script>
-const API = "https://web-game-backend-18mn.onrender.com";
+        <button class="login-btn" id="loginBtn">Login</button>
 
-function showLogin(){
-  document.getElementById("loginBox").classList.remove("hidden");
-  document.getElementById("signupBox").classList.add("hidden");
-  document.getElementById("forgotBox").classList.add("hidden");
-}
+        <div class="signup-link">
+            Don't have an account? <a href="#">Sign Up</a>
+        </div>
+    </div>
 
-function showSignup(){
-  document.getElementById("loginBox").classList.add("hidden");
-  document.getElementById("signupBox").classList.remove("hidden");
-  document.getElementById("forgotBox").classList.add("hidden");
-}
+    <script>
+        const loginBtn = document.getElementById('loginBtn');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const errorMsg = document.getElementById('errorMsg');
 
-function showForgot(){
-  document.getElementById("loginBox").classList.add("hidden");
-  document.getElementById("signupBox").classList.add("hidden");
-  document.getElementById("forgotBox").classList.remove("hidden");
-}
+        loginBtn.addEventListener('click', function() {
+            const username = usernameInput.value.trim();
+            const password = passwordInput.value.trim();
 
-async function login(){
-  const r = await fetch(API + "/login",{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
-      username: document.getElementById("lu").value,
-      password: document.getElementById("lp").value
-    })
-  });
-  const d = await r.json();
+            if (!username || !password) {
+                errorMsg.textContent = 'Please enter username and password';
+                return;
+            }
 
-  if(d.success){
-    // ✅ STEP 3: redirect
-    window.location.href = "home.html";
-  }else{
-    document.getElementById("lm").innerText = "Invalid Login";
-  }
-}
+            if (username.length < 3) {
+                errorMsg.textContent = 'Username must be at least 3 characters';
+                return;
+            }
 
-async function signup(){
-  const r = await fetch(API + "/signup",{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
-      username: document.getElementById("su").value,
-      password: document.getElementById("sp").value
-    })
-  });
-  const d = await r.json();
-  document.getElementById("sm").innerText =
-    d.success ? "Account Created" : "Signup Failed";
-}
+            errorMsg.textContent = '';
+            window.location.href = 'home.html';
+        });
 
-async function forgot(){
-  await fetch(API + "/forgot-password",{
-    method:"POST",
-    headers:{ "Content-Type":"application/json" },
-    body:JSON.stringify({
-      username: document.getElementById("fu").value
-    })
-  });
-  document.getElementById("fm").innerText =
-    "Request sent to admin";
-}
-</script>
-
+        passwordInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                loginBtn.click();
+            }
+        });
+    </script>
 </body>
 </html>
