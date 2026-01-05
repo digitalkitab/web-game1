@@ -3,7 +3,45 @@
 <head>
 <meta charset="UTF-8">
 <title>Game Login</title>
-<link rel="stylesheet" href="./home.css">
+
+<style>
+body{
+  background:#020617;
+  color:white;
+  font-family:Arial;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+.box{
+  width:300px;
+  padding:20px;
+  border:2px solid cyan;
+  box-shadow:0 0 20px cyan;
+  text-align:center;
+}
+input,button{
+  width:100%;
+  padding:10px;
+  margin-top:8px;
+}
+button{
+  cursor:pointer;
+  background:cyan;
+  border:none;
+  font-weight:bold;
+}
+.link{
+  font-size:12px;
+  cursor:pointer;
+  margin-top:8px;
+  color:#67e8f9;
+}
+.hidden{
+  display:none;
+}
+</style>
 </head>
 
 <body>
@@ -12,9 +50,9 @@
   <h2>LOGIN</h2>
   <input id="lu" placeholder="Username">
   <input id="lp" type="password" placeholder="Password">
-  <button id="loginBtn">Login</button>
-  <div class="link" id="toSignup">Create Account</div>
-  <div class="link" id="toForgot">Forgot Password</div>
+  <button onclick="login()">Login</button>
+  <div class="link" onclick="showSignup()">Create Account</div>
+  <div class="link" onclick="showForgot()">Forgot Password</div>
   <div id="lm"></div>
 </div>
 
@@ -22,91 +60,79 @@
   <h2>CREATE ACCOUNT</h2>
   <input id="su" placeholder="Username">
   <input id="sp" type="password" placeholder="Password">
-  <button id="signupBtn">Sign Up</button>
-  <div class="link" id="backLogin1">Back</div>
+  <button onclick="signup()">Sign Up</button>
+  <div class="link" onclick="showLogin()">Back</div>
   <div id="sm"></div>
 </div>
 
 <div class="box hidden" id="forgotBox">
   <h2>FORGOT PASSWORD</h2>
   <input id="fu" placeholder="Username">
-  <button id="forgotBtn">Send Request</button>
-  <div class="link" id="backLogin2">Back</div>
+  <button onclick="forgot()">Send Request</button>
+  <div class="link" onclick="showLogin()">Back</div>
   <div id="fm"></div>
 </div>
 
 <script>
 const API = "https://web-game-backend-18mn.onrender.com";
 
-/* ===== ELEMENT REFERENCES (FIX) ===== */
-const loginBox  = document.getElementById("loginBox");
-const signupBox = document.getElementById("signupBox");
-const forgotBox = document.getElementById("forgotBox");
-
-const lu = document.getElementById("lu");
-const lp = document.getElementById("lp");
-const su = document.getElementById("su");
-const sp = document.getElementById("sp");
-const fu = document.getElementById("fu");
-
-const lm = document.getElementById("lm");
-const sm = document.getElementById("sm");
-const fm = document.getElementById("fm");
-
-/* ===== VIEW SWITCH ===== */
 function showLogin(){
-  loginBox.classList.remove("hidden");
-  signupBox.classList.add("hidden");
-  forgotBox.classList.add("hidden");
+  document.getElementById("loginBox").classList.remove("hidden");
+  document.getElementById("signupBox").classList.add("hidden");
+  document.getElementById("forgotBox").classList.add("hidden");
 }
 
 function showSignup(){
-  loginBox.classList.add("hidden");
-  signupBox.classList.remove("hidden");
-  forgotBox.classList.add("hidden");
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("signupBox").classList.remove("hidden");
+  document.getElementById("forgotBox").classList.add("hidden");
 }
 
 function showForgot(){
-  loginBox.classList.add("hidden");
-  signupBox.classList.add("hidden");
-  forgotBox.classList.remove("hidden");
+  document.getElementById("loginBox").classList.add("hidden");
+  document.getElementById("signupBox").classList.add("hidden");
+  document.getElementById("forgotBox").classList.remove("hidden");
 }
 
-/* ===== BUTTON EVENTS ===== */
-document.getElementById("toSignup").onclick = showSignup;
-document.getElementById("toForgot").onclick = showForgot;
-document.getElementById("backLogin1").onclick = showLogin;
-document.getElementById("backLogin2").onclick = showLogin;
-
-/* ===== API CALLS ===== */
-document.getElementById("loginBtn").onclick = async () => {
+async function login(){
   const r = await fetch(API + "/login",{
     method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ username: lu.value, password: lp.value })
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      username: document.getElementById("lu").value,
+      password: document.getElementById("lp").value
+    })
   });
   const d = await r.json();
-  lm.innerText = d.success ? "Login Successful" : "Invalid Login";
-};
+  document.getElementById("lm").innerText =
+    d.success ? "Login Successful" : "Invalid Login";
+}
 
-document.getElementById("signupBtn").onclick = async () => {
+async function signup(){
   const r = await fetch(API + "/signup",{
     method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ username: su.value, password: sp.value })
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      username: document.getElementById("su").value,
+      password: document.getElementById("sp").value
+    })
   });
   const d = await r.json();
-  sm.innerText = d.success ? "Account Created" : "Signup Failed";
-};
+  document.getElementById("sm").innerText =
+    d.success ? "Account Created" : "Signup Failed";
+}
 
-document.getElementById("forgotBtn").onclick = async () => {
+async function forgot(){
   await fetch(API + "/forgot-password",{
     method:"POST",
-    headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({ username: fu.value })
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({
+      username: document.getElementById("fu").value
+    })
   });
-  fm.innerText = "Request sent to admin";
-};
+  document.getElementById("fm").innerText =
+    "Request sent to admin";
+}
 </script>
 
 </body>
