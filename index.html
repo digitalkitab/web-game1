@@ -3,20 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <title>Game Login</title>
-
-<!-- ✅ CSS LINK YAHI HOTA HAI -->
 <link rel="stylesheet" href="./home.css">
-
 </head>
+
 <body>
 
 <div class="box" id="loginBox">
   <h2>LOGIN</h2>
   <input id="lu" placeholder="Username">
   <input id="lp" type="password" placeholder="Password">
-  <button onclick="login()">Login</button>
-  <div class="link" onclick="showSignup()">Create Account</div>
-  <div class="link" onclick="showForgot()">Forgot Password</div>
+  <button id="loginBtn">Login</button>
+  <div class="link" id="toSignup">Create Account</div>
+  <div class="link" id="toForgot">Forgot Password</div>
   <div id="lm"></div>
 </div>
 
@@ -24,22 +22,38 @@
   <h2>CREATE ACCOUNT</h2>
   <input id="su" placeholder="Username">
   <input id="sp" type="password" placeholder="Password">
-  <button onclick="signup()">Sign Up</button>
-  <div class="link" onclick="showLogin()">Back</div>
+  <button id="signupBtn">Sign Up</button>
+  <div class="link" id="backLogin1">Back</div>
   <div id="sm"></div>
 </div>
 
 <div class="box hidden" id="forgotBox">
   <h2>FORGOT PASSWORD</h2>
   <input id="fu" placeholder="Username">
-  <button onclick="forgot()">Send Request</button>
-  <div class="link" onclick="showLogin()">Back</div>
+  <button id="forgotBtn">Send Request</button>
+  <div class="link" id="backLogin2">Back</div>
   <div id="fm"></div>
 </div>
 
 <script>
-const API="https://web-game-backend-18mn.onrender.com";
+const API = "https://web-game-backend-18mn.onrender.com";
 
+/* ===== ELEMENT REFERENCES (FIX) ===== */
+const loginBox  = document.getElementById("loginBox");
+const signupBox = document.getElementById("signupBox");
+const forgotBox = document.getElementById("forgotBox");
+
+const lu = document.getElementById("lu");
+const lp = document.getElementById("lp");
+const su = document.getElementById("su");
+const sp = document.getElementById("sp");
+const fu = document.getElementById("fu");
+
+const lm = document.getElementById("lm");
+const sm = document.getElementById("sm");
+const fm = document.getElementById("fm");
+
+/* ===== VIEW SWITCH ===== */
 function showLogin(){
   loginBox.classList.remove("hidden");
   signupBox.classList.add("hidden");
@@ -49,41 +63,50 @@ function showLogin(){
 function showSignup(){
   loginBox.classList.add("hidden");
   signupBox.classList.remove("hidden");
+  forgotBox.classList.add("hidden");
 }
 
 function showForgot(){
   loginBox.classList.add("hidden");
+  signupBox.classList.add("hidden");
   forgotBox.classList.remove("hidden");
 }
 
-async function login(){
-  const r = await fetch(API+"/login",{
+/* ===== BUTTON EVENTS ===== */
+document.getElementById("toSignup").onclick = showSignup;
+document.getElementById("toForgot").onclick = showForgot;
+document.getElementById("backLogin1").onclick = showLogin;
+document.getElementById("backLogin2").onclick = showLogin;
+
+/* ===== API CALLS ===== */
+document.getElementById("loginBtn").onclick = async () => {
+  const r = await fetch(API + "/login",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({username:lu.value,password:lp.value})
+    body:JSON.stringify({ username: lu.value, password: lp.value })
   });
   const d = await r.json();
   lm.innerText = d.success ? "Login Successful" : "Invalid Login";
-}
+};
 
-async function signup(){
-  const r = await fetch(API+"/signup",{
+document.getElementById("signupBtn").onclick = async () => {
+  const r = await fetch(API + "/signup",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({username:su.value,password:sp.value})
+    body:JSON.stringify({ username: su.value, password: sp.value })
   });
   const d = await r.json();
   sm.innerText = d.success ? "Account Created" : "Signup Failed";
-}
+};
 
-async function forgot(){
-  await fetch(API+"/forgot-password",{
+document.getElementById("forgotBtn").onclick = async () => {
+  await fetch(API + "/forgot-password",{
     method:"POST",
     headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({username:fu.value})
+    body:JSON.stringify({ username: fu.value })
   });
   fm.innerText = "Request sent to admin";
-}
+};
 </script>
 
 </body>
