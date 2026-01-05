@@ -1,45 +1,12 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Game Login</title>
-
-  <link rel="stylesheet" href="./css/home.css">
-
-</head>
 <meta charset="UTF-8">
 <title>Game Login</title>
-<style>
-body{
-  background:#020617;
-  color:white;
-  font-family:Arial;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-.box{
-  width:300px;
-  padding:20px;
-  border:2px solid cyan;
-  box-shadow:0 0 20px cyan;
-  text-align:center;
-}
-input,button{
-  width:100%;
-  padding:10px;
-  margin-top:8px;
-}
-button{ cursor:pointer; }
-.link{
-  font-size:12px;
-  cursor:pointer;
-  margin-top:8px;
-}
-.hidden{ display:none; }
-</style>
+
+<!-- ✅ CSS LINK YAHI HOTA HAI -->
+<link rel="stylesheet" href="./home.css">
+
 </head>
 <body>
 
@@ -78,36 +45,46 @@ function showLogin(){
   signupBox.classList.add("hidden");
   forgotBox.classList.add("hidden");
 }
+
 function showSignup(){
   loginBox.classList.add("hidden");
   signupBox.classList.remove("hidden");
 }
+
 function showForgot(){
   loginBox.classList.add("hidden");
   forgotBox.classList.remove("hidden");
 }
 
 async function login(){
-  const r=await fetch(API+"/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:lu.value,password:lp.value})});
-  const d=await r.json();
-  lm.innerText=d.success?"Login Successful":"Invalid Login";
+  const r = await fetch(API+"/login",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({username:lu.value,password:lp.value})
+  });
+  const d = await r.json();
+  lm.innerText = d.success ? "Login Successful" : "Invalid Login";
 }
 
 async function signup(){
-  const r=await fetch(API+"/signup",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:su.value,password:sp.value})});
-  const d=await r.json();
-  sm.innerText=d.success?"Account Created":"Signup Failed";
+  const r = await fetch(API+"/signup",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({username:su.value,password:sp.value})
+  });
+  const d = await r.json();
+  sm.innerText = d.success ? "Account Created" : "Signup Failed";
 }
 
 async function forgot(){
-  await fetch(API+"/forgot-password",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({username:fu.value})});
-  fm.innerText="Request sent to admin";
+  await fetch(API+"/forgot-password",{
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({username:fu.value})
+  });
+  fm.innerText = "Request sent to admin";
 }
 </script>
 
 </body>
-  body{ background:red !important; }
-
-
 </html>
-
