@@ -1,491 +1,402 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WEB GAME - Home</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WEB GAME</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f7fa;
-            padding-bottom: 80px;
-        }
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  color: #fff;
+  padding-bottom: 70px;
+  min-height: 100vh;
+}
 
-        .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 15px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
+.header {
+  background: linear-gradient(135deg, #0f3460 0%, #16213e 100%);
+  padding: 15px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
 
-        .logo-text {
-            font-size: 20px;
-            font-weight: 700;
-            letter-spacing: 1px;
-        }
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  background: linear-gradient(45deg, #ffd700, #ffed4e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
 
-        .balance {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 8px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
+.wallet {
+  background: rgba(255, 215, 0, 0.1);
+  border: 2px solid #ffd700;
+  border-radius: 20px;
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
 
-        .balance:active {
-            transform: scale(0.95);
-            background: rgba(255, 255, 255, 0.3);
-        }
+.wallet:hover {
+  background: rgba(255, 215, 0, 0.2);
+  transform: scale(1.05);
+}
 
-        .banner-container {
-            padding: 20px;
-            overflow: hidden;
-        }
+.wallet-icon {
+  font-size: 20px;
+}
 
-        .banner-slider {
-            display: flex;
-            transition: transform 0.5s ease;
-            gap: 15px;
-        }
+.wallet-balance {
+  font-weight: bold;
+  color: #ffd700;
+}
 
-        .banner-slide {
-            min-width: 100%;
-            height: 160px;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            font-weight: 700;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-        }
+.banner-slider {
+  margin: 15px;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  height: 150px;
+  background: linear-gradient(135deg, #e94560 0%, #533483 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s;
+}
 
-        .banner-slide:nth-child(2) {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
+.banner-slider:active {
+  transform: scale(0.98);
+}
 
-        .banner-slide:nth-child(3) {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        }
+.banner-content {
+  text-align: center;
+  padding: 20px;
+}
 
-        .slider-dots {
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-            margin-top: 15px;
-        }
+.banner-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
-        .dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #ccc;
-            transition: all 0.3s;
-            cursor: pointer;
-        }
+.banner-subtitle {
+  font-size: 14px;
+  opacity: 0.9;
+}
 
-        .dot.active {
-            background: #667eea;
-            width: 24px;
-            border-radius: 4px;
-        }
+.notice-bar {
+  background: rgba(233, 69, 96, 0.2);
+  padding: 12px 20px;
+  margin: 0 15px 15px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
 
-        .notice-bar {
-            margin: 0 20px;
-            background: #fff3cd;
-            border-radius: 10px;
-            padding: 12px 15px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-            cursor: pointer;
-        }
+.notice-bar:hover {
+  background: rgba(233, 69, 96, 0.3);
+}
 
-        .speaker-icon {
-            width: 20px;
-            height: 20px;
-            background: #ff9800;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 12px;
-            flex-shrink: 0;
-        }
+.notice-icon {
+  font-size: 18px;
+}
 
-        .notice-text {
-            font-size: 14px;
-            color: #856404;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+.notice-text {
+  font-size: 14px;
+  flex: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
-        .categories {
-            display: flex;
-            justify-content: space-around;
-            padding: 25px 20px;
-            background: white;
-            margin: 20px 20px 0;
-            border-radius: 15px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
+.categories {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  padding: 0 15px 20px;
+}
 
-        .category-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
+.category-item {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 15px;
+  padding: 15px 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid transparent;
+}
 
-        .category-item:active {
-            transform: scale(0.95);
-        }
+.category-item:active {
+  transform: scale(0.95);
+}
 
-        .category-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 24px;
-            box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
-        }
+.category-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: #ffd700;
+}
 
-        .category-name {
-            font-size: 12px;
-            color: #333;
-            font-weight: 500;
-        }
+.category-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
 
-        .section-title {
-            padding: 25px 20px 15px;
-            font-size: 18px;
-            font-weight: 700;
-            color: #333;
-        }
+.category-name {
+  font-size: 12px;
+  font-weight: 500;
+}
 
-        .games-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            padding: 0 20px 30px;
-        }
+.section-title {
+  padding: 0 20px 15px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffd700;
+}
 
-        .game-card {
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
+.games-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  padding: 0 15px 20px;
+}
 
-        .game-card:active {
-            transform: scale(0.95);
-        }
+.game-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border-radius: 15px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s;
+  border: 2px solid rgba(255, 215, 0, 0.3);
+}
 
-        .game-image {
-            width: 100%;
-            height: 120px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            font-weight: 700;
-        }
+.game-card:active {
+  transform: scale(0.95);
+}
 
-        .game-card:nth-child(2) .game-image {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-        }
+.game-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(255, 215, 0, 0.3);
+}
 
-        .game-card:nth-child(3) .game-image {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-        }
+.game-image {
+  width: 100%;
+  height: 120px;
+  background: linear-gradient(135deg, #e94560 0%, #533483 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
 
-        .game-card:nth-child(4) .game-image {
-            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
-        }
+.game-info {
+  padding: 12px;
+}
 
-        .game-card:nth-child(5) .game-image {
-            background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-        }
+.game-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
 
-        .game-info {
-            padding: 12px;
-        }
+.game-players {
+  font-size: 12px;
+  opacity: 0.7;
+}
 
-        .game-name {
-            font-size: 16px;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 5px;
-        }
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #0f3460;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
 
-        .game-rtp {
-            font-size: 12px;
-            color: #28a745;
-            font-weight: 500;
-        }
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  padding: 5px 15px;
+  transition: all 0.3s;
+  color: rgba(255, 255, 255, 0.6);
+}
 
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
-            z-index: 100;
-        }
+.nav-item:active {
+  transform: scale(0.9);
+}
 
-        .nav-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-            color: #999;
-            font-size: 11px;
-            cursor: pointer;
-            flex: 1;
-            padding: 5px 0;
-            transition: transform 0.2s;
-        }
+.nav-item:hover {
+  color: #ffd700;
+}
 
-        .nav-item:active {
-            transform: scale(0.95);
-        }
+.nav-item.center {
+  background: linear-gradient(135deg, #e94560 0%, #533483 100%);
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  margin-top: -30px;
+  border: 4px solid #0f3460;
+  color: #fff;
+}
 
-        .nav-item.active {
-            color: #667eea;
-        }
+.nav-icon {
+  font-size: 24px;
+}
 
-        .nav-icon {
-            width: 24px;
-            height: 24px;
-            background: #e0e0e0;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-        }
-
-        .nav-item.active .nav-icon {
-            background: #667eea;
-            color: white;
-        }
-
-        .nav-item.center {
-            margin-top: -20px;
-        }
-
-        .nav-item.center .nav-icon {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            font-size: 28px;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-    </style>
+.nav-label {
+  font-size: 11px;
+  font-weight: 500;
+}
+</style>
 </head>
 <body>
-    <div class="header">
-        <div class="logo-text">WEB GAME</div>
-        <div class="balance" data-page="wallet.html" id="balanceDisplay">₹ 998.00</div>
+
+<div class="header">
+  <div class="logo">WEB GAME</div>
+  <div class="wallet" onclick="handleNavigation('wallet.html')">
+    <span class="wallet-icon">💰</span>
+    <span class="wallet-balance">$1,234.56</span>
+  </div>
+</div>
+
+<div class="banner-slider" onclick="handleNavigation('banner.html')">
+  <div class="banner-content">
+    <div class="banner-title">🎰 Welcome Bonus</div>
+    <div class="banner-subtitle">Get up to 5% on your first deposit!</div>
+  </div>
+</div>
+
+<div class="notice-bar" onclick="handleNavigation('notice.html')">
+  <span class="notice-icon">📢</span>
+  <span class="notice-text">New games added! Check out our latest slots and win big prizes!</span>
+</div>
+
+<div class="categories">
+  <div class="category-item" onclick="handleNavigation('lottery.html')">
+    <div class="category-icon">🎫</div>
+    <div class="category-name">Lottery</div>
+  </div>
+  <div class="category-item" onclick="handleNavigation('original.html')">
+    <div class="category-icon">🎮</div>
+    <div class="category-name">Original</div>
+  </div>
+  <div class="category-item" onclick="handleNavigation('slots.html')">
+    <div class="category-icon">🎰</div>
+    <div class="category-name">Slots</div>
+  </div>
+  <div class="category-item" onclick="handleNavigation('fishing.html')">
+    <div class="category-icon">🎣</div>
+    <div class="category-name">Fishing</div>
+  </div>
+</div>
+
+<div class="section-title">🔥 Hot Games</div>
+
+<div class="games-grid">
+  <div class="game-card" onclick="handleNavigation('game1.html')">
+    <div class="game-image">✈️</div>
+    <div class="game-info">
+      <div class="game-name">Aviator</div>
+      <div class="game-players">👥 12,345 playing</div>
     </div>
-
-    <div class="banner-container">
-        <div class="banner-slider" id="bannerSlider">
-            <div class="banner-slide" data-page="promotion.html">VIP BONUS</div>
-            <div class="banner-slide" data-page="promotion.html">WELCOME OFFER</div>
-            <div class="banner-slide" data-page="promotion.html">HOT PROMOTION</div>
-        </div>
-        <div class="slider-dots">
-            <div class="dot active"></div>
-            <div class="dot"></div>
-            <div class="dot"></div>
-        </div>
+  </div>
+  
+  <div class="game-card" onclick="handleNavigation('game2.html')">
+    <div class="game-image">🎯</div>
+    <div class="game-info">
+      <div class="game-name">WinGo</div>
+      <div class="game-players">👥 8,901 playing</div>
     </div>
-
-    <div class="notice-bar" data-page="notifications.html">
-        <div class="speaker-icon">📢</div>
-        <div class="notice-text">Welcome to WEB GAME platform</div>
+  </div>
+  
+  <div class="game-card" onclick="handleNavigation('game3.html')">
+    <div class="game-image">🎲</div>
+    <div class="game-info">
+      <div class="game-name">K3</div>
+      <div class="game-players">👥 6,543 playing</div>
     </div>
-
-    <div class="categories">
-        <div class="category-item" data-page="lottery.html">
-            <div class="category-icon">🎰</div>
-            <div class="category-name">Lottery</div>
-        </div>
-        <div class="category-item" data-page="original.html">
-            <div class="category-icon">🎮</div>
-            <div class="category-name">Original</div>
-        </div>
-        <div class="category-item" data-page="slots.html">
-            <div class="category-icon">🎪</div>
-            <div class="category-name">Slots</div>
-        </div>
-        <div class="category-item" data-page="fishing.html">
-            <div class="category-icon">🎣</div>
-            <div class="category-name">Fishing</div>
-        </div>
+  </div>
+  
+  <div class="game-card" onclick="handleNavigation('game4.html')">
+    <div class="game-image">🔢</div>
+    <div class="game-info">
+      <div class="game-name">5D</div>
+      <div class="game-players">👥 4,321 playing</div>
     </div>
-
-    <div class="section-title">Recommended Games</div>
-
-    <div class="games-grid">
-        <div class="game-card" data-page="game1.html">
-            <div class="game-image">✈️ AVIATOR</div>
-            <div class="game-info">
-                <div class="game-name">Aviator</div>
-                <div class="game-rtp">RTP 97%</div>
-            </div>
-        </div>
-
-        <div class="game-card" data-page="game2.html">
-            <div class="game-image">🎯 WINGO</div>
-            <div class="game-info">
-                <div class="game-name">WinGo</div>
-                <div class="game-rtp">RTP 96.5%</div>
-            </div>
-        </div>
-
-        <div class="game-card" data-page="game3.html">
-            <div class="game-image">🎲 K3</div>
-            <div class="game-info">
-                <div class="game-name">K3</div>
-                <div class="game-rtp">RTP 98%</div>
-            </div>
-        </div>
-
-        <div class="game-card" data-page="game4.html">
-            <div class="game-image">🔢 5D</div>
-            <div class="game-info">
-                <div class="game-name">5D</div>
-                <div class="game-rtp">RTP 97.5%</div>
-            </div>
-        </div>
-
-        <div class="game-card" data-page="slots.html">
-            <div class="game-image">🎰 SLOTS</div>
-            <div class="game-info">
-                <div class="game-name">Slots</div>
-                <div class="game-rtp">RTP 96%</div>
-            </div>
-        </div>
+  </div>
+  
+  <div class="game-card" onclick="handleNavigation('slots.html')">
+    <div class="game-image">🎰</div>
+    <div class="game-info">
+      <div class="game-name">Slots</div>
+      <div class="game-players">👥 15,678 playing</div>
     </div>
+  </div>
+</div>
 
-    <div class="bottom-nav">
-        <div class="nav-item active" data-page="home.html">
-            <div class="nav-icon">🏠</div>
-            <div>Home</div>
-        </div>
-        <div class="nav-item" data-page="activity.html">
-            <div class="nav-icon">🎁</div>
-            <div>Activity</div>
-        </div>
-        <div class="nav-item center" data-page="games.html">
-            <div class="nav-icon">🎮</div>
-        </div>
-        <div class="nav-item" data-page="promotion.html">
-            <div class="nav-icon">🎉</div>
-            <div>Promotion</div>
-        </div>
-        <div class="nav-item" data-page="account.html">
-            <div class="nav-icon">👤</div>
-            <div>Account</div>
-        </div>
-    </div>
+<div class="bottom-nav">
+  <div class="nav-item" onclick="handleNavigation('home.html')">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Home</span>
+  </div>
+  
+  <div class="nav-item" onclick="handleNavigation('activity.html')">
+    <span class="nav-icon">🎁</span>
+    <span class="nav-label">Activity</span>
+  </div>
+  
+  <div class="nav-item center" onclick="handleNavigation('games.html')">
+    <span class="nav-icon">🎮</span>
+  </div>
+  
+  <div class="nav-item" onclick="handleNavigation('promotion.html')">
+    <span class="nav-icon">🎉</span>
+    <span class="nav-label">Promotion</span>
+  </div>
+  
+  <div class="nav-item" onclick="handleNavigation('account.html')">
+    <span class="nav-icon">👤</span>
+    <span class="nav-label">Account</span>
+  </div>
+</div>
 
-    <script>
-        function handleNavigation(page) {
-            fetch(page, { method: 'HEAD' })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.href = page;
-                    } else {
-                        alert('Page coming soon');
-                    }
-                })
-                .catch(() => {
-                    alert('Page coming soon');
-                });
-        }
+<script>
+function handleNavigation(page) {
+  fetch(page, { method: 'HEAD' })
+    .then(response => {
+      if (response.ok) {
+        window.location.href = page;
+      } else {
+        alert('Page coming soon');
+      }
+    })
+    .catch(() => {
+      alert('Page coming soon');
+    });
+}
+</script>
 
-        document.querySelectorAll('[data-page]').forEach(element => {
-            element.addEventListener('click', function(e) {
-                e.preventDefault();
-                const page = this.getAttribute('data-page');
-                if (page !== 'home.html') {
-                    handleNavigation(page);
-                }
-            });
-        });
-
-        let currentSlide = 0;
-        const slides = document.querySelectorAll('.banner-slide');
-        const dots = document.querySelectorAll('.dot');
-        const slider = document.getElementById('bannerSlider');
-
-        function showSlide(index) {
-            currentSlide = index;
-            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentSlide);
-            });
-        }
-
-        function nextSlide() {
-            currentSlide = (currentSlide + 1) % slides.length;
-            showSlide(currentSlide);
-        }
-
-        setInterval(nextSlide, 3000);
-
-        dots.forEach((dot, index) => {
-            dot.addEventListener('click', (e) => {
-                e.stopPropagation();
-                showSlide(index);
-            });
-        });
-
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => {
-            item.addEventListener('click', function() {
-                navItems.forEach(i => i.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-    </script>
 </body>
 </html>
