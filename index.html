@@ -389,17 +389,61 @@ signupForm.addEventListener('submit', function(e) {
 backLink.addEventListener('click', function(e) {
   e.preventDefault();
   
-  fetch('login.html', { method: 'HEAD' })
-    .then(response => {
-      if (response.ok) {
-        window.location.href = 'login.html';
-      } else {
-        alert('Page coming soon');
-      }
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
+  
+  emailInput.classList.remove('error');
+  emailError.classList.remove('show');
+  
+  if (!email || !password) {
+    emailError.textContent = 'Please enter email and password';
+    emailError.classList.add('show');
+    return;
+  }
+  
+  if (!email.endsWith('@gmail.com')) {
+    emailInput.classList.add('error');
+    emailError.textContent = 'Only Gmail accounts are allowed';
+    emailError.classList.add('show');
+    return;
+  }
+  
+  backLink.style.pointerEvents = 'none';
+  backLink.style.opacity = '0.5';
+  const originalText = backLink.textContent;
+  backLink.textContent = 'Logging in...';
+  
+  const API_URL = 'https://your-backend-api.com/login';
+  
+  fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ 
+      email: email,
+      password: password 
     })
-    .catch(() => {
-      alert('Page coming soon');
-    });
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success || data.token) {
+      window.location.href = 'home.html';
+    } else {
+      emailError.textContent = data.message || 'Invalid email or password';
+      emailError.classList.add('show');
+      backLink.style.pointerEvents = 'auto';
+      backLink.style.opacity = '1';
+      backLink.textContent = originalText;
+    }
+  })
+  .catch(error => {
+    emailError.textContent = 'Login failed. Please try again';
+    emailError.classList.add('show');
+    backLink.style.pointerEvents = 'auto';
+    backLink.style.opacity = '1';
+    backLink.textContent = originalText;
+  });
 });
 
 forgotLink.addEventListener('click', function(e) {
