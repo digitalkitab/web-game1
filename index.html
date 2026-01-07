@@ -397,7 +397,19 @@ signupForm.addEventListener('submit', function(e) {
   .then(response => response.json())
   .then(data => {
     if (data.success || data.token) {
-      window.location.href = 'home.html';
+      if (data.status === 'pending' || data.user?.status === 'pending') {
+        emailError.textContent = 'Your account is awaiting admin approval';
+        emailError.classList.add('show');
+        signupBtn.disabled = false;
+        btnText.textContent = 'Login';
+      } else if (data.status === 'approved' || data.user?.status === 'approved' || !data.status) {
+        window.location.href = 'home.html';
+      } else {
+        emailError.textContent = 'Your account is awaiting admin approval';
+        emailError.classList.add('show');
+        signupBtn.disabled = false;
+        btnText.textContent = 'Login';
+      }
     } else {
       emailError.textContent = data.message || 'Invalid email or password';
       emailError.classList.add('show');
