@@ -405,6 +405,8 @@ body::before {
 </div>
 
 <script>
+const API_BASE_URL = 'http://localhost:3000';
+
 const signupForm = document.getElementById('signupForm');
 const usernameInput = document.getElementById('username');
 const emailInput = document.getElementById('email');
@@ -420,8 +422,6 @@ const emailError = document.getElementById('emailError');
 const phoneError = document.getElementById('phoneError');
 const passwordError = document.getElementById('passwordError');
 const confirmPasswordError = document.getElementById('confirmPasswordError');
-
-const API_URL = 'https://your-backend-api.com/signup';
 
 const tempEmailDomains = [
   'tempmail.com', 'guerrillamail.com', '10minutemail.com', 'throwaway.email',
@@ -485,7 +485,7 @@ function validatePassword(password) {
   return null;
 }
 
-signupForm.addEventListener('submit', function(e) {
+signupForm.addEventListener('submit', async function(e) {
   e.preventDefault();
   clearErrors();
   
@@ -533,32 +533,34 @@ signupForm.addEventListener('submit', function(e) {
   signupBtn.disabled = true;
   btnText.textContent = 'Creating account...';
   
-  fetch(API_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      username: username,
-      email: email,
-      phone: phone,
-      password: password,
-      status: 'pending'
-    })
-  })
-  .then(response => response.json())
-  .then(data => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/signup`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        username: username,
+        email: email,
+        phone: phone,
+        password: password
+      })
+    });
+    
+    const data = await response.json();
+    
+    if (response.ok && data.success) {
+      signupForm.reset();
+      successMessage.classList.add('show');
+    } else {
+      showError(emailInput, emailError, data.message || 'Signup failed');
+    }
+  } catch (error) {
+    showError(emailInput, emailError, 'Network error. Please try again');
+  } finally {
     signupBtn.disabled = false;
     btnText.textContent = 'Create Account';
-    successMessage.classList.add('show');
-    signupForm.reset();
-  })
-  .catch(error => {
-    signupBtn.disabled = false;
-    btnText.textContent = 'Create Account';
-    successMessage.classList.add('show');
-    signupForm.reset();
-  });
+  }
 });
 
 [usernameInput, emailInput, phoneInput, passwordInput, confirmPasswordInput].forEach(input => {
