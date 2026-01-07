@@ -315,7 +315,7 @@ body::before {
     <div class="corner-accent bottom-right"></div>
     
     <h1 class="logo-title">WEB GAME</h1>
-    <h2 class="page-title">Sign Up</h2>
+    <h2 class="page-title">Login</h2>
     
     <form id="signupForm">
       <div class="form-group">
@@ -340,12 +340,12 @@ body::before {
       </div>
       
       <button type="submit" class="signup-btn" id="signupBtn">
-        <span id="btnText">Sign Up</span>
+        <span id="btnText">Login</span>
       </button>
     </form>
     
     <a href="#" class="back-link" id="forgotLink">Forgot Password?</a>
-    <a href="#" class="back-link" id="backLink">Already have an account? Login</a>
+    <a href="#" class="back-link" id="backLink">Don't have an account? Sign Up</a>
   </div>
 </div>
 
@@ -370,6 +370,7 @@ signupForm.addEventListener('submit', function(e) {
   
   if (!email.endsWith('@gmail.com')) {
     emailInput.classList.add('error');
+    emailError.textContent = 'Only Gmail accounts are allowed';
     emailError.classList.add('show');
     return;
   }
@@ -379,39 +380,7 @@ signupForm.addEventListener('submit', function(e) {
   }
   
   signupBtn.disabled = true;
-  btnText.textContent = 'Creating account...';
-  
-  setTimeout(() => {
-    window.location.href = 'home.html';
-  }, 1500);
-});
-
-backLink.addEventListener('click', function(e) {
-  e.preventDefault();
-  
-  const email = emailInput.value.trim();
-  const password = passwordInput.value.trim();
-  
-  emailInput.classList.remove('error');
-  emailError.classList.remove('show');
-  
-  if (!email || !password) {
-    emailError.textContent = 'Please enter email and password';
-    emailError.classList.add('show');
-    return;
-  }
-  
-  if (!email.endsWith('@gmail.com')) {
-    emailInput.classList.add('error');
-    emailError.textContent = 'Only Gmail accounts are allowed';
-    emailError.classList.add('show');
-    return;
-  }
-  
-  backLink.style.pointerEvents = 'none';
-  backLink.style.opacity = '0.5';
-  const originalText = backLink.textContent;
-  backLink.textContent = 'Logging in...';
+  btnText.textContent = 'Logging in...';
   
   const API_URL = 'https://your-backend-api.com/login';
   
@@ -432,18 +401,21 @@ backLink.addEventListener('click', function(e) {
     } else {
       emailError.textContent = data.message || 'Invalid email or password';
       emailError.classList.add('show');
-      backLink.style.pointerEvents = 'auto';
-      backLink.style.opacity = '1';
-      backLink.textContent = originalText;
+      signupBtn.disabled = false;
+      btnText.textContent = 'Login';
     }
   })
   .catch(error => {
     emailError.textContent = 'Login failed. Please try again';
     emailError.classList.add('show');
-    backLink.style.pointerEvents = 'auto';
-    backLink.style.opacity = '1';
-    backLink.textContent = originalText;
+    signupBtn.disabled = false;
+    btnText.textContent = 'Login';
   });
+});
+
+backLink.addEventListener('click', function(e) {
+  e.preventDefault();
+  window.location.href = 'signup.html';
 });
 
 forgotLink.addEventListener('click', function(e) {
