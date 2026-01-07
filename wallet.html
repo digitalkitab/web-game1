@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEB GAME WALLET</title>
+    <link rel="stylesheet" href="css/wallet.css">
+</head>
+<body>
+    <div class="header">
+        <button class="back-btn" id="backBtn">←</button>
+        <div class="header-text">WEB GAME WALLET</div>
+        <div class="spacer"></div>
+    </div>
+
+    <div class="container">
+        <div class="balance-card">
+            <div class="balance-label">Current Balance</div>
+            <div class="balance-amount" id="balanceAmount">₹ .00</div>
+        </div>
+
+        <div class="action-card">
+            <div class="card-title">Add Balance</div>
+            <div class="input-group">
+                <input type="number" id="addInput" placeholder="Enter amount" min="1">
+            </div>
+            <button class="action-btn add-btn" id="addBtn">Add Balance</button>
+        </div>
+
+        <div class="action-card">
+            <div class="card-title">Withdraw Balance</div>
+            <div class="input-group">
+                <input type="number" id="withdrawInput" placeholder="Enter amount" min="1">
+            </div>
+            <button class="action-btn withdraw-btn" id="withdrawBtn">Withdraw</button>
+        </div>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <script src="js/wallet.js"></script>
+</body>
+</html>
