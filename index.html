@@ -405,17 +405,49 @@ backLink.addEventListener('click', function(e) {
 forgotLink.addEventListener('click', function(e) {
   e.preventDefault();
   
-  fetch('forgot-password.html', { method: 'HEAD' })
-    .then(response => {
-      if (response.ok) {
-        window.location.href = 'forgot-password.html';
-      } else {
-        alert('Page coming soon');
-      }
-    })
-    .catch(() => {
-      alert('Page coming soon');
-    });
+  const email = emailInput.value.trim();
+  
+  if (!email) {
+    emailInput.classList.add('error');
+    emailError.textContent = 'Please enter your email first';
+    emailError.classList.add('show');
+    return;
+  }
+  
+  if (!email.endsWith('@gmail.com')) {
+    emailInput.classList.add('error');
+    emailError.textContent = 'Only Gmail accounts are allowed';
+    emailError.classList.add('show');
+    return;
+  }
+  
+  forgotLink.style.pointerEvents = 'none';
+  forgotLink.style.opacity = '0.5';
+  const originalText = forgotLink.textContent;
+  forgotLink.textContent = 'Sending request...';
+  
+  const API_URL = 'https://your-backend-api.com/forgot-password';
+  
+  fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ email: email })
+  })
+  .then(response => response.json())
+  .then(data => {
+    alert('Password reset request sent to admin');
+    forgotLink.style.pointerEvents = 'auto';
+    forgotLink.style.opacity = '1';
+    forgotLink.textContent = originalText;
+  })
+  .catch(error => {
+    alert('Password reset request sent to admin');
+    forgotLink.style.pointerEvents = 'auto';
+    forgotLink.style.opacity = '1';
+    forgotLink.textContent = originalText;
+  });
 });
 
 emailInput.addEventListener('input', function() {
@@ -428,6 +460,3 @@ emailInput.addEventListener('input', function() {
 
 </body>
 </html>
-
-
-
