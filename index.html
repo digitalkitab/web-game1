@@ -1,174 +1,430 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WEB GAME - Login</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sign Up - WEB GAME</title>
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-        }
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0a0e27;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
 
-        .login-container {
-            background: white;
-            border-radius: 20px;
-            padding: 40px 30px;
-            width: 100%;
-            max-width: 400px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-        }
+body::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+}
 
-        .logo {
-            text-align: center;
-            margin-bottom: 40px;
-        }
+@keyframes gridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
 
-        .logo h1 {
-            font-size: 32px;
-            font-weight: 700;
-            color: #667eea;
-            letter-spacing: 2px;
-        }
+.cyber-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
 
-        .logo p {
-            font-size: 14px;
-            color: #666;
-            margin-top: 5px;
-        }
+.cyber-line {
+  position: absolute;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.5), transparent);
+  height: 2px;
+  width: 100%;
+  animation: scanline 3s linear infinite;
+}
 
-        .input-group {
-            margin-bottom: 20px;
-        }
+@keyframes scanline {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
 
-        .input-group label {
-            display: block;
-            font-size: 14px;
-            color: #333;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
+.signup-container {
+  position: relative;
+  z-index: 10;
+  width: 90%;
+  max-width: 400px;
+  padding: 40px;
+}
 
-        .input-group input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 16px;
-            transition: all 0.3s;
-            outline: none;
-        }
+.cyber-frame {
+  position: relative;
+  background: rgba(10, 14, 39, 0.95);
+  border: 2px solid rgba(0, 255, 255, 0.5);
+  border-radius: 20px;
+  padding: 50px 40px;
+  box-shadow: 
+    0 0 30px rgba(0, 255, 255, 0.3),
+    inset 0 0 30px rgba(0, 255, 255, 0.05);
+  animation: framePulse 3s ease-in-out infinite;
+}
 
-        .input-group input:focus {
-            border-color: #667eea;
-        }
+@keyframes framePulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 30px rgba(0, 255, 255, 0.05); }
+  50% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.5), inset 0 0 40px rgba(0, 255, 255, 0.1); }
+}
 
-        .login-btn {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 10px;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: transform 0.2s;
-        }
+.cyber-frame::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    transparent 30%, 
+    rgba(0, 255, 255, 0.3) 50%, 
+    transparent 70%);
+  border-radius: 20px;
+  z-index: -1;
+  animation: borderGlow 3s linear infinite;
+  background-size: 200% 200%;
+}
 
-        .login-btn:active {
-            transform: scale(0.98);
-        }
+@keyframes borderGlow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
 
-        .signup-link {
-            text-align: center;
-            margin-top: 20px;
-            font-size: 14px;
-            color: #666;
-        }
+.logo-title {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 32px;
+  font-weight: bold;
+  background: linear-gradient(45deg, #00ffff, #00ccff, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
 
-        .signup-link a {
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-        }
+.page-title {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 24px;
+  color: #00ffff;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
 
-        .error-message {
-            color: #e74c3c;
-            font-size: 14px;
-            margin-top: 10px;
-            text-align: center;
-            min-height: 20px;
-        }
-    </style>
+.form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.input-field {
+  width: 100%;
+  padding: 15px 20px;
+  background: rgba(0, 255, 255, 0.05);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-field::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input-field:focus {
+  border-color: #00ffff;
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.input-field.error {
+  border-color: #ff0055;
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.error-message {
+  color: #ff0055;
+  font-size: 12px;
+  margin-top: 8px;
+  display: none;
+  text-shadow: 0 0 5px rgba(255, 0, 85, 0.5);
+}
+
+.error-message.show {
+  display: block;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.signup-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(45deg, #00ffff, #00ccff);
+  border: none;
+  border-radius: 10px;
+  color: #0a0e27;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.signup-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.signup-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.signup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+}
+
+.signup-btn:active {
+  transform: translateY(0);
+}
+
+.signup-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.signup-btn span {
+  position: relative;
+  z-index: 1;
+}
+
+.back-link {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  color: #00ffff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+}
+
+.back-link:hover {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+  letter-spacing: 1px;
+}
+
+.corner-accent {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #00ffff;
+}
+
+.corner-accent.top-left {
+  top: 10px;
+  left: 10px;
+  border-right: none;
+  border-bottom: none;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.corner-accent.top-right {
+  top: 10px;
+  right: 10px;
+  border-left: none;
+  border-bottom: none;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.corner-accent.bottom-left {
+  bottom: 10px;
+  left: 10px;
+  border-right: none;
+  border-top: none;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.corner-accent.bottom-right {
+  bottom: 10px;
+  right: 10px;
+  border-left: none;
+  border-top: none;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+</style>
 </head>
 <body>
-    <div class="login-container">
-        <div class="logo">
-            <h1>WEB GAME</h1>
-            <p>Welcome Back</p>
-        </div>
 
-        <div class="input-group">
-            <label>Username</label>
-            <input type="text" id="username" placeholder="Enter username">
-        </div>
+<div class="cyber-bg">
+  <div class="cyber-line" style="animation-delay: 0s;"></div>
+  <div class="cyber-line" style="animation-delay: 1s;"></div>
+  <div class="cyber-line" style="animation-delay: 2s;"></div>
+</div>
 
-        <div class="input-group">
-            <label>Password</label>
-            <input type="password" id="password" placeholder="Enter password">
-        </div>
+<div class="signup-container">
+  <div class="cyber-frame">
+    <div class="corner-accent top-left"></div>
+    <div class="corner-accent top-right"></div>
+    <div class="corner-accent bottom-left"></div>
+    <div class="corner-accent bottom-right"></div>
+    
+    <h1 class="logo-title">WEB GAME</h1>
+    <h2 class="page-title">Sign Up</h2>
+    
+    <form id="signupForm">
+      <div class="form-group">
+        <input 
+          type="email" 
+          id="email" 
+          class="input-field" 
+          placeholder="Email"
+          required
+        >
+        <div class="error-message" id="emailError">Only Gmail accounts are allowed</div>
+      </div>
+      
+      <div class="form-group">
+        <input 
+          type="password" 
+          id="password" 
+          class="input-field" 
+          placeholder="Password"
+          required
+        >
+      </div>
+      
+      <button type="submit" class="signup-btn" id="signupBtn">
+        <span id="btnText">Sign Up</span>
+      </button>
+    </form>
+    
+    <a href="#" class="back-link" id="forgotLink">Forgot Password?</a>
+    <a href="#" class="back-link" id="backLink">Already have an account? Login</a>
+  </div>
+</div>
 
-        <div class="error-message" id="errorMsg"></div>
+<script>
+const signupForm = document.getElementById('signupForm');
+const emailInput = document.getElementById('email');
+const passwordInput = document.getElementById('password');
+const signupBtn = document.getElementById('signupBtn');
+const btnText = document.getElementById('btnText');
+const emailError = document.getElementById('emailError');
+const backLink = document.getElementById('backLink');
+const forgotLink = document.getElementById('forgotLink');
 
-        <button class="login-btn" id="loginBtn">Login</button>
+signupForm.addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
+  
+  emailInput.classList.remove('error');
+  emailError.classList.remove('show');
+  
+  if (!email.endsWith('@gmail.com')) {
+    emailInput.classList.add('error');
+    emailError.classList.add('show');
+    return;
+  }
+  
+  if (password.length < 1) {
+    return;
+  }
+  
+  signupBtn.disabled = true;
+  btnText.textContent = 'Creating account...';
+  
+  setTimeout(() => {
+    window.location.href = 'home.html';
+  }, 1500);
+});
 
-        <div class="signup-link">
-            Don't have an account? <a href="#">Sign Up</a>
-        </div>
-    </div>
+backLink.addEventListener('click', function(e) {
+  e.preventDefault();
+  
+  fetch('login.html', { method: 'HEAD' })
+    .then(response => {
+      if (response.ok) {
+        window.location.href = 'login.html';
+      } else {
+        alert('Page coming soon');
+      }
+    })
+    .catch(() => {
+      alert('Page coming soon');
+    });
+});
 
-    <script>
-        const loginBtn = document.getElementById('loginBtn');
-        const usernameInput = document.getElementById('username');
-        const passwordInput = document.getElementById('password');
-        const errorMsg = document.getElementById('errorMsg');
+forgotLink.addEventListener('click', function(e) {
+  e.preventDefault();
+  
+  fetch('forgot-password.html', { method: 'HEAD' })
+    .then(response => {
+      if (response.ok) {
+        window.location.href = 'forgot-password.html';
+      } else {
+        alert('Page coming soon');
+      }
+    })
+    .catch(() => {
+      alert('Page coming soon');
+    });
+});
 
-        loginBtn.addEventListener('click', function() {
-            const username = usernameInput.value.trim();
-            const password = passwordInput.value.trim();
+emailInput.addEventListener('input', function() {
+  if (emailInput.classList.contains('error')) {
+    emailInput.classList.remove('error');
+    emailError.classList.remove('show');
+  }
+});
+</script>
 
-            if (!username || !password) {
-                errorMsg.textContent = 'Please enter username and password';
-                return;
-            }
-
-            if (username.length < 3) {
-                errorMsg.textContent = 'Username must be at least 3 characters';
-                return;
-            }
-
-            errorMsg.textContent = '';
-            window.location.href = 'home.html';
-        });
-
-        passwordInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                loginBtn.click();
-            }
-        });
-    </script>
 </body>
 </html>
