@@ -192,6 +192,10 @@ body::before {
   font-size: 16px;
   text-align: center;
   margin-top: 20px;
+  padding: 15px;
+  background: rgba(0, 255, 136, 0.1);
+  border: 2px solid rgba(0, 255, 136, 0.3);
+  border-radius: 10px;
   display: none;
   text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
   animation: fadeIn 0.5s;
@@ -393,7 +397,7 @@ body::before {
         <span id="btnText">Create Account</span>
       </button>
       
-      <div class="success-message" id="successMessage">Account created successfully</div>
+      <div class="success-message" id="successMessage">Account created. Waiting for admin approval.</div>
     </form>
     
     <a href="index.html" class="back-link">Already have an account? Login</a>
@@ -416,6 +420,8 @@ const emailError = document.getElementById('emailError');
 const phoneError = document.getElementById('phoneError');
 const passwordError = document.getElementById('passwordError');
 const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+const API_URL = 'https://your-backend-api.com/signup';
 
 const tempEmailDomains = [
   'tempmail.com', 'guerrillamail.com', '10minutemail.com', 'throwaway.email',
@@ -527,8 +533,6 @@ signupForm.addEventListener('submit', function(e) {
   signupBtn.disabled = true;
   btnText.textContent = 'Creating account...';
   
-  const API_URL = 'https://your-backend-api.com/signup';
-  
   fetch(API_URL, {
     method: 'POST',
     headers: {
@@ -538,7 +542,8 @@ signupForm.addEventListener('submit', function(e) {
       username: username,
       email: email,
       phone: phone,
-      password: password
+      password: password,
+      status: 'pending'
     })
   })
   .then(response => response.json())
