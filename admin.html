@@ -140,18 +140,9 @@ body::before {
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 1px;
-}
-
-.request-type.signup {
   background: rgba(0, 255, 136, 0.2);
   color: #00ff88;
   border: 1px solid rgba(0, 255, 136, 0.5);
-}
-
-.request-type.forgot-password {
-  background: rgba(255, 165, 0, 0.2);
-  color: #ffa500;
-  border: 1px solid rgba(255, 165, 0, 0.5);
 }
 
 .request-info {
@@ -218,54 +209,21 @@ body::before {
   transform: none;
 }
 
-.password-input-group {
-  display: none;
-  margin-top: 10px;
-  gap: 10px;
-}
-
-.password-input-group.show {
-  display: flex;
-}
-
-.password-input {
-  flex: 1;
-  padding: 10px;
-  background: rgba(0, 255, 255, 0.05);
-  border: 2px solid rgba(0, 255, 255, 0.3);
-  border-radius: 8px;
-  color: #fff;
-  font-size: 14px;
-  outline: none;
-}
-
-.password-input:focus {
-  border-color: #00ffff;
-  background: rgba(0, 255, 255, 0.1);
-}
-
-.btn-reset-password {
-  padding: 10px 20px;
-  background: linear-gradient(45deg, #ffa500, #ff8800);
-  border: none;
-  border-radius: 8px;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 15px rgba(255, 165, 0, 0.5);
-}
-
-.btn-reset-password:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 25px rgba(255, 165, 0, 0.8);
-}
-
 .empty-state {
   text-align: center;
   padding: 40px;
   color: rgba(255, 255, 255, 0.5);
   font-size: 18px;
+}
+
+.error-message {
+  background: rgba(255, 0, 85, 0.2);
+  border: 2px solid rgba(255, 0, 85, 0.5);
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 20px;
+  color: #ff0055;
+  text-align: center;
 }
 
 @media (max-width: 768px) {
@@ -295,7 +253,7 @@ body::before {
 <div class="container">
   <div class="header">
     <div class="logo-title">WEB GAME ADMIN</div>
-    <div class="page-subtitle">Unified Request Management Dashboard</div>
+    <div class="page-subtitle">Signup Request Management Dashboard</div>
   </div>
 
   <div class="stats">
@@ -307,14 +265,10 @@ body::before {
       <div class="stat-number" id="signupCount">0</div>
       <div class="stat-label">Signup Requests</div>
     </div>
-    <div class="stat-card">
-      <div class="stat-number" id="passwordCount">0</div>
-      <div class="stat-label">Password Reset Requests</div>
-    </div>
   </div>
 
   <div class="requests-list">
-    <h2>Pending Requests</h2>
+    <h2>Pending Signup Requests</h2>
     <div id="requestsList"></div>
   </div>
 </div>
@@ -326,7 +280,6 @@ const adminToken = 'your-secure-admin-secret-key-change-in-production';
 const requestsList = document.getElementById('requestsList');
 const totalPending = document.getElementById('totalPending');
 const signupCount = document.getElementById('signupCount');
-const passwordCount = document.getElementById('passwordCount');
 
 loadPendingRequests();
 
@@ -344,51 +297,30 @@ async function loadPendingRequests() {
     }
 
     const data = await response.json();
-    displayRequests(data.requests);
+    
+    // Filter only signup requests
+    const signupRequests = data.requests.filter(r => r.type === 'signup');
+    displayRequests(signupRequests);
   } catch (error) {
     console.error('Error loading requests:', error);
-    requestsList.innerHTML = '<div class="empty-state">Failed to load requests</div>';
+    requestsList.innerHTML = '<div class="error-message">⚠️ Failed to load requests. Please check your connection and try again.</div>';
   }
 }
 
 function displayRequests(requests) {
-  const signups = requests.filter(r => r.type === 'signup').length;
-  const passwords = requests.filter(r => r.type === 'forgot_password').length;
-  
   totalPending.textContent = requests.length;
-  signupCount.textContent = signups;
-  passwordCount.textContent = passwords;
+  signupCount.textContent = requests.length;
 
   if (requests.length === 0) {
-    requestsList.innerHTML = '<div class="empty-state">No pending requests</div>';
+    requestsList.innerHTML = '<div class="empty-state">✅ No pending signup requests</div>';
     return;
   }
 
   requestsList.innerHTML = requests.map(request => {
-    const typeLabel = request.type === 'signup' ? 'Signup' : 'Password Reset';
-    const typeClass = request.type === 'signup' ? 'signup' : 'forgot-password';
-    
-    let actionsHTML = '';
-    if (request.type === 'signup') {
-      actionsHTML = `
-        <button class="btn-approve" onclick="approveSignup('${request._id}')">Approve Account</button>
-        <button class="btn-reject" onclick="rejectSignup('${request._id}')">Reject Account</button>
-      `;
-    } else {
-      actionsHTML = `
-        <button class="btn-approve" onclick="showPasswordReset('${request._id}')">Reset Password</button>
-        <button class="btn-reject" onclick="rejectPasswordReset('${request._id}')">Reject Request</button>
-        <div class="password-input-group" id="password-group-${request._id}">
-          <input type="password" class="password-input" id="new-password-${request._id}" placeholder="New Password (min 6 chars)">
-          <button class="btn-reset-password" onclick="confirmPasswordReset('${request._id}')">Confirm Reset</button>
-        </div>
-      `;
-    }
-
     return `
       <div class="request-card" id="request-${request._id}">
         <div class="request-header">
-          <span class="request-type ${typeClass}">${typeLabel}</span>
+          <span class="request-type">Signup Request</span>
           <span class="request-details">🕒 ${new Date(request.createdAt).toLocaleString()}</span>
         </div>
         <div class="request-info">
@@ -397,16 +329,12 @@ function displayRequests(requests) {
           ${request.phone ? `<div class="request-details">📱 ${escapeHtml(request.phone)}</div>` : ''}
         </div>
         <div class="request-actions">
-          ${actionsHTML}
+          <button class="btn-approve" onclick="approveSignup('${request._id}')">✓ Approve Account</button>
+          <button class="btn-reject" onclick="rejectSignup('${request._id}')">✗ Reject Account</button>
         </div>
       </div>
     `;
   }).join('');
-}
-
-function showPasswordReset(requestId) {
-  const passwordGroup = document.getElementById(`password-group-${requestId}`);
-  passwordGroup.classList.toggle('show');
 }
 
 async function approveSignup(requestId) {
@@ -428,17 +356,18 @@ async function approveSignup(requestId) {
 
     if (response.ok && data.success) {
       removeRequestCard(requestCard);
+      alert('✅ Signup approved successfully!');
     } else {
-      throw new Error(data.message);
+      throw new Error(data.message || 'Failed to approve signup');
     }
   } catch (error) {
-    alert('Failed to approve signup: ' + error.message);
+    alert('❌ Failed to approve signup: ' + error.message);
     buttons.forEach(btn => btn.disabled = false);
   }
 }
 
 async function rejectSignup(requestId) {
-  if (!confirm('Are you sure you want to reject this signup? This will delete the user account permanently.')) {
+  if (!confirm('⚠️ Are you sure you want to reject this signup? This will delete the user account permanently.')) {
     return;
   }
 
@@ -460,83 +389,12 @@ async function rejectSignup(requestId) {
 
     if (response.ok && data.success) {
       removeRequestCard(requestCard);
+      alert('✅ Signup rejected successfully!');
     } else {
-      throw new Error(data.message);
+      throw new Error(data.message || 'Failed to reject signup');
     }
   } catch (error) {
-    alert('Failed to reject signup: ' + error.message);
-    buttons.forEach(btn => btn.disabled = false);
-  }
-}
-
-async function confirmPasswordReset(requestId) {
-  const newPassword = document.getElementById(`new-password-${requestId}`).value.trim();
-  
-  if (!newPassword) {
-    alert('Please enter a new password');
-    return;
-  }
-  
-  if (newPassword.length < 6) {
-    alert('Password must be at least 6 characters');
-    return;
-  }
-
-  const requestCard = document.getElementById(`request-${requestId}`);
-  const buttons = requestCard.querySelectorAll('button');
-  buttons.forEach(btn => btn.disabled = true);
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/admin/reset-password`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${adminToken}`
-      },
-      body: JSON.stringify({ requestId, newPassword })
-    });
-
-    const data = await response.json();
-
-    if (response.ok && data.success) {
-      removeRequestCard(requestCard);
-    } else {
-      throw new Error(data.message);
-    }
-  } catch (error) {
-    alert('Failed to reset password: ' + error.message);
-    buttons.forEach(btn => btn.disabled = false);
-  }
-}
-
-async function rejectPasswordReset(requestId) {
-  if (!confirm('Are you sure you want to reject this password reset request?')) {
-    return;
-  }
-
-  const requestCard = document.getElementById(`request-${requestId}`);
-  const buttons = requestCard.querySelectorAll('button');
-  buttons.forEach(btn => btn.disabled = true);
-
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/admin/reject-password-reset`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${adminToken}`
-      },
-      body: JSON.stringify({ requestId })
-    });
-
-    const data = await response.json();
-
-    if (response.ok && data.success) {
-      removeRequestCard(requestCard);
-    } else {
-      throw new Error(data.message);
-    }
-  } catch (error) {
-    alert('Failed to reject password reset: ' + error.message);
+    alert('❌ Failed to reject signup: ' + error.message);
     buttons.forEach(btn => btn.disabled = false);
   }
 }
@@ -553,15 +411,12 @@ function removeRequestCard(card) {
 
 function updateStats() {
   const remainingRequests = document.querySelectorAll('.request-card').length;
-  const signups = document.querySelectorAll('.request-type.signup').length;
-  const passwords = document.querySelectorAll('.request-type.forgot-password').length;
   
   totalPending.textContent = remainingRequests;
-  signupCount.textContent = signups;
-  passwordCount.textContent = passwords;
+  signupCount.textContent = remainingRequests;
   
   if (remainingRequests === 0) {
-    requestsList.innerHTML = '<div class="empty-state">No pending requests</div>';
+    requestsList.innerHTML = '<div class="empty-state">✅ No pending signup requests</div>';
   }
 }
 
@@ -576,6 +431,7 @@ function escapeHtml(text) {
   return text.replace(/[&<>"']/g, m => map[m]);
 }
 
+// Auto-refresh every 30 seconds
 setInterval(() => {
   loadPendingRequests();
 }, 30000);
