@@ -4,96 +4,509 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login - WEB GAME</title>
-<!-- ⚠️ UI / CSS SAME – NOT TOUCHED -->
 <style>
-/* ======= SAME CSS AS YOU SENT (UNCHANGED) ======= */
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#0a0e27;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-body::before{content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:radial-gradient(circle,rgba(0,255,255,.1) 1px,transparent 1px);background-size:50px 50px;animation:gridMove 20s linear infinite}
-@keyframes gridMove{0%{transform:translate(0,0)}100%{transform:translate(50px,50px)}}
-.signup-container{position:relative;z-index:10;width:90%;max-width:400px;padding:40px}
-.cyber-frame{background:rgba(10,14,39,.95);border:2px solid rgba(0,255,255,.5);border-radius:20px;padding:50px 40px;box-shadow:0 0 30px rgba(0,255,255,.3)}
-.logo-title{text-align:center;font-size:32px;font-weight:bold;color:#00ffff;margin-bottom:10px}
-.page-title{text-align:center;color:#00ffff;margin-bottom:30px}
-.input-field{width:100%;padding:15px;margin-bottom:20px;background:rgba(0,255,255,.05);border:2px solid rgba(0,255,255,.3);border-radius:10px;color:white}
-.input-field.error{border-color:#ff0055}
-.error-message{color:#ff0055;font-size:12px;display:none}
-.error-message.show{display:block}
-.signup-btn{width:100%;padding:15px;background:cyan;border:none;border-radius:10px;font-size:18px;font-weight:bold;cursor:pointer}
-.back-link{display:block;text-align:center;margin-top:15px;color:#00ffff;text-decoration:none}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #0a0e27;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+}
+
+body::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 50px 50px;
+  animation: gridMove 20s linear infinite;
+}
+
+@keyframes gridMove {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(50px, 50px); }
+}
+
+.cyber-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.cyber-line {
+  position: absolute;
+  width: 2px;
+  height: 200%;
+  background: linear-gradient(180deg, transparent, var(--line-color), transparent);
+  opacity: 0.6;
+  animation: moveDiagonal var(--duration) linear infinite;
+}
+
+.cyber-line.diagonal-right {
+  --line-color: #00ffff;
+  --duration: 8s;
+  transform-origin: top left;
+  transform: rotate(45deg);
+  left: calc(var(--offset) * 10%);
+  animation-delay: calc(var(--offset) * -2s);
+}
+
+.cyber-line.diagonal-left {
+  --line-color: #ff0055;
+  --duration: 10s;
+  transform-origin: top right;
+  transform: rotate(-45deg);
+  right: calc(var(--offset) * 10%);
+  animation-delay: calc(var(--offset) * -2.5s);
+}
+
+@keyframes moveDiagonal {
+  0% {
+    top: -100%;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+.signup-container {
+  position: relative;
+  z-index: 10;
+  width: 90%;
+  max-width: 400px;
+  padding: 40px;
+}
+
+.cyber-frame {
+  position: relative;
+  background: rgba(10, 14, 39, 0.95);
+  border: 2px solid rgba(0, 255, 255, 0.5);
+  border-radius: 20px;
+  padding: 50px 40px;
+  box-shadow: 
+    0 0 30px rgba(0, 255, 255, 0.3),
+    inset 0 0 30px rgba(0, 255, 255, 0.05);
+  animation: framePulse 3s ease-in-out infinite;
+}
+
+@keyframes framePulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 30px rgba(0, 255, 255, 0.05); }
+  50% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.5), inset 0 0 40px rgba(0, 255, 255, 0.1); }
+}
+
+.cyber-frame::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    transparent 30%, 
+    rgba(0, 255, 255, 0.3) 50%, 
+    transparent 70%);
+  border-radius: 20px;
+  z-index: -1;
+  animation: borderGlow 3s linear infinite;
+  background-size: 200% 200%;
+}
+
+@keyframes borderGlow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.logo-title {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 32px;
+  font-weight: bold;
+  background: linear-gradient(45deg, #00ffff, #00ccff, #00ffff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 24px;
+  color: #00ffff;
+  font-weight: 300;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.form-group {
+  margin-bottom: 25px;
+  position: relative;
+}
+
+.input-field {
+  width: 100%;
+  padding: 15px 20px;
+  background: rgba(0, 255, 255, 0.05);
+  border: 2px solid rgba(0, 255, 255, 0.3);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.input-field::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.input-field:focus {
+  border-color: #00ffff;
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
+}
+
+.input-field.error {
+  border-color: #ff0055;
+  animation: shake 0.5s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+.error-message {
+  color: #ff0055;
+  font-size: 12px;
+  margin-top: 8px;
+  display: none;
+  text-shadow: 0 0 5px rgba(255, 0, 85, 0.5);
+}
+
+.error-message.show {
+  display: block;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.signup-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(45deg, #00ffff, #00ccff);
+  border: none;
+  border-radius: 10px;
+  color: #0a0e27;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.signup-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.signup-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.signup-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
+}
+
+.signup-btn:active {
+  transform: translateY(0);
+}
+
+.signup-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.signup-btn span {
+  position: relative;
+  z-index: 1;
+}
+
+.back-link {
+  display: block;
+  text-align: center;
+  margin-top: 15px;
+  color: #00ffff;
+  text-decoration: none;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+  cursor: pointer;
+}
+
+.back-link:hover {
+  color: #fff;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
+  letter-spacing: 1px;
+}
+
+.back-link.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.corner-accent {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #00ffff;
+}
+
+.corner-accent.top-left {
+  top: 10px;
+  left: 10px;
+  border-right: none;
+  border-bottom: none;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.corner-accent.top-right {
+  top: 10px;
+  right: 10px;
+  border-left: none;
+  border-bottom: none;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.corner-accent.bottom-left {
+  bottom: 10px;
+  left: 10px;
+  border-right: none;
+  border-top: none;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
+
+.corner-accent.bottom-right {
+  bottom: 10px;
+  right: 10px;
+  border-left: none;
+  border-top: none;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+}
 </style>
 </head>
-
 <body>
+
+<div class="cyber-bg">
+  <div class="cyber-line diagonal-right" style="--offset: 0;"></div>
+  <div class="cyber-line diagonal-right" style="--offset: 1;"></div>
+  <div class="cyber-line diagonal-right" style="--offset: 2;"></div>
+  <div class="cyber-line diagonal-right" style="--offset: 3;"></div>
+  <div class="cyber-line diagonal-right" style="--offset: 4;"></div>
+  <div class="cyber-line diagonal-right" style="--offset: 5;"></div>
+  <div class="cyber-line diagonal-right" style="--offset: 6;"></div>
+  <div class="cyber-line diagonal-right" style="--offset: 7;"></div>
+  
+  <div class="cyber-line diagonal-left" style="--offset: 0;"></div>
+  <div class="cyber-line diagonal-left" style="--offset: 1;"></div>
+  <div class="cyber-line diagonal-left" style="--offset: 2;"></div>
+  <div class="cyber-line diagonal-left" style="--offset: 3;"></div>
+  <div class="cyber-line diagonal-left" style="--offset: 4;"></div>
+  <div class="cyber-line diagonal-left" style="--offset: 5;"></div>
+  <div class="cyber-line diagonal-left" style="--offset: 6;"></div>
+  <div class="cyber-line diagonal-left" style="--offset: 7;"></div>
+</div>
 
 <div class="signup-container">
   <div class="cyber-frame">
+    <div class="corner-accent top-left"></div>
+    <div class="corner-accent top-right"></div>
+    <div class="corner-accent bottom-left"></div>
+    <div class="corner-accent bottom-right"></div>
+    
     <h1 class="logo-title">WEB GAME</h1>
     <h2 class="page-title">Login</h2>
-
-    <form id="loginForm">
-      <input id="username" class="input-field" placeholder="Username" required>
-      <div id="userError" class="error-message"></div>
-
-      <input id="password" type="password" class="input-field" placeholder="Password" required>
-
-      <button class="signup-btn" id="loginBtn">
+    
+    <form id="signupForm">
+      <div class="form-group">
+        <input 
+          type="text" 
+          id="username" 
+          class="input-field" 
+          placeholder="Username"
+          required
+        >
+        <div class="error-message" id="usernameError"></div>
+      </div>
+      
+      <div class="form-group">
+        <input 
+          type="password" 
+          id="password" 
+          class="input-field" 
+          placeholder="Password"
+          required
+        >
+      </div>
+      
+      <button type="submit" class="signup-btn" id="signupBtn">
         <span id="btnText">Login</span>
       </button>
     </form>
-
-    <a href="#" class="back-link" id="forgotLink">Forgot Password?</a>
-    <a href="signup.html" class="back-link">Don't have an account? Sign Up</a>
+    
+    <a class="back-link" id="forgotLink">Forgot Password?</a>
+    <a href="signup.html" class="back-link" id="backLink">Don't have an account? Sign Up</a>
   </div>
 </div>
 
 <script>
-/* ====== FIXED LOGIC ONLY ====== */
-const API_BASE_URL = "https://web-game-backend-18mn.onrender.com";
+const API_BASE_URL = 'https://web-game-backend-18mn.onrender.com';
 
-const form = document.getElementById("loginForm");
-const usernameInput = document.getElementById("username");
-const passwordInput = document.getElementById("password");
-const userError = document.getElementById("userError");
-const btnText = document.getElementById("btnText");
-const loginBtn = document.getElementById("loginBtn");
+const signupForm = document.getElementById('signupForm');
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const signupBtn = document.getElementById('signupBtn');
+const btnText = document.getElementById('btnText');
+const usernameError = document.getElementById('usernameError');
+const forgotLink = document.getElementById('forgotLink');
 
-form.addEventListener("submit", async (e) => {
+signupForm.addEventListener('submit', async function(e) {
   e.preventDefault();
-  userError.classList.remove("show");
-  usernameInput.classList.remove("error");
-
-  loginBtn.disabled = true;
-  btnText.innerText = "Logging in...";
-
+  
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value.trim();
+  
+  usernameInput.classList.remove('error');
+  usernameError.classList.remove('show');
+  
+  if (password.length < 1) {
+    return;
+  }
+  
+  signupBtn.disabled = true;
+  btnText.textContent = 'Logging in...';
+  
   try {
-    const res = await fetch(API_BASE_URL + "/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: usernameInput.value.trim(),
-        password: passwordInput.value
+    const response = await fetch(`${API_BASE_URL}/api/login`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ 
+        username: username,
+        password: password 
       })
     });
-
-    const data = await res.json();
-
-    if (res.ok && data.success) {
-      window.location.href = "home.html";
+    
+    const data = await response.json();
+    
+    if (response.ok && data.success) {
+      if (data.status === 'approved') {
+        window.location.href = 'home.html';
+      }
     } else {
-      userError.innerText = data.message || "Invalid login";
-      userError.classList.add("show");
-      usernameInput.classList.add("error");
+      usernameError.textContent = data.message || 'Invalid username or password';
+      usernameError.classList.add('show');
+      usernameInput.classList.add('error');
     }
-
-  } catch (err) {
-    userError.innerText = "Network error. Please try again";
-    userError.classList.add("show");
-    usernameInput.classList.add("error");
+  } catch (error) {
+    usernameError.textContent = 'Network error. Please try again';
+    usernameError.classList.add('show');
+    usernameInput.classList.add('error');
+  } finally {
+    signupBtn.disabled = false;
+    btnText.textContent = 'Login';
   }
+});
 
-  loginBtn.disabled = false;
-  btnText.innerText = "Login";
+forgotLink.addEventListener('click', async function(e) {
+  e.preventDefault();
+  
+  const username = usernameInput.value.trim();
+  
+  if (!username) {
+    usernameInput.classList.add('error');
+    usernameError.textContent = 'Please enter your username first';
+    usernameError.classList.add('show');
+    return;
+  }
+  
+  forgotLink.classList.add('disabled');
+  const originalText = forgotLink.textContent;
+  forgotLink.textContent = 'Sending request...';
+  
+  try {
+    const response = await fetch(`${API_BASE_URL}/forgot-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ username: username })
+    });
+    
+    if (response.ok) {
+      usernameError.textContent = 'Password reset request sent to admin';
+      usernameError.style.color = '#00ff88';
+      usernameError.classList.add('show');
+    } else {
+      usernameError.textContent = 'Password reset request sent to admin';
+      usernameError.style.color = '#00ff88';
+      usernameError.classList.add('show');
+    }
+  } catch (error) {
+    usernameError.textContent = 'Network error. Please try again';
+    usernameError.style.color = '#ff0055';
+    usernameError.classList.add('show');
+  } finally {
+    forgotLink.classList.remove('disabled');
+    forgotLink.textContent = originalText;
+  }
+});
+
+usernameInput.addEventListener('input', function() {
+  if (usernameInput.classList.contains('error')) {
+    usernameInput.classList.remove('error');
+    usernameError.classList.remove('show');
+    usernameError.style.color = '#ff0055';
+  }
 });
 </script>
 
