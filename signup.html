@@ -4,577 +4,129 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sign Up - WEB GAME</title>
+
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:#0a0e27;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-family:Arial;
 }
-
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: #0a0e27;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow-x: hidden;
-  position: relative;
-  padding: 20px 0;
+.box{
+  width:380px;
+  background:#020617;
+  padding:30px;
+  border-radius:12px;
+  box-shadow:0 0 25px cyan;
+  color:white;
 }
-
-body::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(0, 255, 255, 0.1) 1px, transparent 1px);
-  background-size: 50px 50px;
-  animation: gridMove 20s linear infinite;
+h1{text-align:center;margin-bottom:10px;color:cyan}
+input,button{
+  width:100%;
+  padding:12px;
+  margin-top:10px;
+  border:none;
+  border-radius:6px;
 }
-
-@keyframes gridMove {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(50px, 50px); }
+input{background:#111;color:white}
+button{
+  background:cyan;
+  color:black;
+  font-weight:bold;
+  cursor:pointer;
 }
-
-.cyber-bg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-.cyber-line {
-  position: absolute;
-  background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.5), transparent);
-  height: 2px;
-  width: 100%;
-  animation: scanline 3s linear infinite;
-}
-
-@keyframes scanline {
-  0% { top: -10%; }
-  100% { top: 110%; }
-}
-
-.signup-container {
-  position: relative;
-  z-index: 10;
-  width: 90%;
-  max-width: 450px;
-  padding: 40px 20px;
-}
-
-.cyber-frame {
-  position: relative;
-  background: rgba(10, 14, 39, 0.95);
-  border: 2px solid rgba(0, 255, 255, 0.5);
-  border-radius: 20px;
-  padding: 50px 40px;
-  box-shadow: 
-    0 0 30px rgba(0, 255, 255, 0.3),
-    inset 0 0 30px rgba(0, 255, 255, 0.05);
-  animation: framePulse 3s ease-in-out infinite;
-}
-
-@keyframes framePulse {
-  0%, 100% { box-shadow: 0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 30px rgba(0, 255, 255, 0.05); }
-  50% { box-shadow: 0 0 40px rgba(0, 255, 255, 0.5), inset 0 0 40px rgba(0, 255, 255, 0.1); }
-}
-
-.cyber-frame::before {
-  content: '';
-  position: absolute;
-  top: -2px;
-  left: -2px;
-  right: -2px;
-  bottom: -2px;
-  background: linear-gradient(45deg, 
-    transparent 30%, 
-    rgba(0, 255, 255, 0.3) 50%, 
-    transparent 70%);
-  border-radius: 20px;
-  z-index: -1;
-  animation: borderGlow 3s linear infinite;
-  background-size: 200% 200%;
-}
-
-@keyframes borderGlow {
-  0% { background-position: 0% 50%; }
-  100% { background-position: 200% 50%; }
-}
-
-.logo-title {
-  text-align: center;
-  margin-bottom: 10px;
-  font-size: 32px;
-  font-weight: bold;
-  background: linear-gradient(45deg, #00ffff, #00ccff, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  text-transform: uppercase;
-  letter-spacing: 3px;
-  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-}
-
-.page-title {
-  text-align: center;
-  margin-bottom: 30px;
-  font-size: 24px;
-  color: #00ffff;
-  font-weight: 300;
-  letter-spacing: 2px;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-}
-
-.form-group {
-  margin-bottom: 20px;
-  position: relative;
-}
-
-.input-field {
-  width: 100%;
-  padding: 15px 20px;
-  background: rgba(0, 255, 255, 0.05);
-  border: 2px solid rgba(0, 255, 255, 0.3);
-  border-radius: 10px;
-  color: #fff;
-  font-size: 16px;
-  outline: none;
-  transition: all 0.3s ease;
-}
-
-.input-field::placeholder {
-  color: rgba(255, 255, 255, 0.4);
-}
-
-.input-field:focus {
-  border-color: #00ffff;
-  background: rgba(0, 255, 255, 0.1);
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-}
-
-.input-field.error {
-  border-color: #ff0055;
-  animation: shake 0.5s;
-}
-
-@keyframes shake {
-  0%, 100% { transform: translateX(0); }
-  25% { transform: translateX(-10px); }
-  75% { transform: translateX(10px); }
-}
-
-.error-message {
-  color: #ff0055;
-  font-size: 12px;
-  margin-top: 8px;
-  display: none;
-  text-shadow: 0 0 5px rgba(255, 0, 85, 0.5);
-}
-
-.error-message.show {
-  display: block;
-  animation: fadeIn 0.3s;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.success-message {
-  color: #00ff88;
-  font-size: 16px;
-  text-align: center;
-  margin-top: 20px;
-  padding: 15px;
-  background: rgba(0, 255, 136, 0.1);
-  border: 2px solid rgba(0, 255, 136, 0.3);
-  border-radius: 10px;
-  display: none;
-  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
-  animation: fadeIn 0.5s;
-}
-
-.success-message.show {
-  display: block;
-}
-
-.signup-btn {
-  width: 100%;
-  padding: 15px;
-  background: linear-gradient(45deg, #00ffff, #00ccff);
-  border: none;
-  border-radius: 10px;
-  color: #0a0e27;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-  position: relative;
-  overflow: hidden;
-  margin-top: 10px;
-}
-
-.signup-btn::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.signup-btn:hover::before {
-  width: 300px;
-  height: 300px;
-}
-
-.signup-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
-}
-
-.signup-btn:active {
-  transform: translateY(0);
-}
-
-.signup-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-  transform: none;
-}
-
-.signup-btn span {
-  position: relative;
-  z-index: 1;
-}
-
-.back-link {
-  display: block;
-  text-align: center;
-  margin-top: 20px;
-  color: #00ffff;
-  text-decoration: none;
-  font-size: 14px;
-  transition: all 0.3s ease;
-  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
-}
-
-.back-link:hover {
-  color: #fff;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8);
-  letter-spacing: 1px;
-}
-
-.corner-accent {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  border: 2px solid #00ffff;
-}
-
-.corner-accent.top-left {
-  top: 10px;
-  left: 10px;
-  border-right: none;
-  border-bottom: none;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-}
-
-.corner-accent.top-right {
-  top: 10px;
-  right: 10px;
-  border-left: none;
-  border-bottom: none;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-}
-
-.corner-accent.bottom-left {
-  bottom: 10px;
-  left: 10px;
-  border-right: none;
-  border-top: none;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-}
-
-.corner-accent.bottom-right {
-  bottom: 10px;
-  right: 10px;
-  border-left: none;
-  border-top: none;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-}
+button:disabled{opacity:.5}
+.msg{margin-top:15px;text-align:center}
+.error{color:#ff4d4d}
+.success{color:#00ff88}
+a{color:cyan;text-decoration:none;display:block;text-align:center;margin-top:15px}
 </style>
 </head>
+
 <body>
 
-<div class="cyber-bg">
-  <div class="cyber-line" style="animation-delay: 0s;"></div>
-  <div class="cyber-line" style="animation-delay: 1s;"></div>
-  <div class="cyber-line" style="animation-delay: 2s;"></div>
-</div>
+<div class="box">
+  <h1>WEB GAME</h1>
+  <h3 style="text-align:center">Create Account</h3>
 
-<div class="signup-container">
-  <div class="cyber-frame">
-    <div class="corner-accent top-left"></div>
-    <div class="corner-accent top-right"></div>
-    <div class="corner-accent bottom-left"></div>
-    <div class="corner-accent bottom-right"></div>
-    
-    <h1 class="logo-title">WEB GAME</h1>
-    <h2 class="page-title">Sign Up</h2>
-    
-    <form id="signupForm">
-      <div class="form-group">
-        <input 
-          type="text" 
-          id="username" 
-          class="input-field" 
-          placeholder="Username"
-          required
-        >
-        <div class="error-message" id="usernameError"></div>
-      </div>
-      
-      <div class="form-group">
-        <input 
-          type="email" 
-          id="email" 
-          class="input-field" 
-          placeholder="Gmail"
-          required
-        >
-        <div class="error-message" id="emailError"></div>
-      </div>
-      
-      <div class="form-group">
-        <input 
-          type="tel" 
-          id="phone" 
-          class="input-field" 
-          placeholder="Phone Number"
-          required
-        >
-        <div class="error-message" id="phoneError"></div>
-      </div>
-      
-      <div class="form-group">
-        <input 
-          type="password" 
-          id="password" 
-          class="input-field" 
-          placeholder="Password"
-          required
-        >
-        <div class="error-message" id="passwordError"></div>
-      </div>
-      
-      <div class="form-group">
-        <input 
-          type="password" 
-          id="confirmPassword" 
-          class="input-field" 
-          placeholder="Confirm Password"
-          required
-        >
-        <div class="error-message" id="confirmPasswordError"></div>
-      </div>
-      
-      <button type="submit" class="signup-btn" id="signupBtn">
-        <span id="btnText">Create Account</span>
-      </button>
-      
-      <div class="success-message" id="successMessage">Account created. Waiting for admin approval.</div>
-    </form>
-    
-    <a href="index.html" class="back-link">Already have an account? Login</a>
-  </div>
+  <input id="username" placeholder="Username">
+  <input id="email" type="email" placeholder="Gmail">
+  <input id="phone" placeholder="Phone Number">
+  <input id="password" type="password" placeholder="Password">
+  <input id="confirm" type="password" placeholder="Confirm Password">
+
+  <button id="btn">Create Account</button>
+
+  <div id="msg" class="msg"></div>
+
+  <a href="index.html">Already have account? Login</a>
 </div>
 
 <script>
-const API_BASE_URL = 'https://web-game-backend-18mn.onrender.com';
+const API = "https://web-game-backend-18mn.onrender.com";
 
-const signupForm = document.getElementById('signupForm');
-const usernameInput = document.getElementById('username');
-const emailInput = document.getElementById('email');
-const phoneInput = document.getElementById('phone');
-const passwordInput = document.getElementById('password');
-const confirmPasswordInput = document.getElementById('confirmPassword');
-const signupBtn = document.getElementById('signupBtn');
-const btnText = document.getElementById('btnText');
-const successMessage = document.getElementById('successMessage');
+const btn = document.getElementById("btn");
+const msg = document.getElementById("msg");
 
-const usernameError = document.getElementById('usernameError');
-const emailError = document.getElementById('emailError');
-const phoneError = document.getElementById('phoneError');
-const passwordError = document.getElementById('passwordError');
-const confirmPasswordError = document.getElementById('confirmPasswordError');
+btn.onclick = async () => {
+  msg.innerHTML = "";
+  btn.disabled = true;
+  btn.innerText = "Creating...";
 
-const tempEmailDomains = [
-  'tempmail.com', 'guerrillamail.com', '10minutemail.com', 'throwaway.email',
-  'mailinator.com', 'maildrop.cc', 'temp-mail.org', 'getnada.com',
-  'trashmail.com', 'fakeinbox.com', 'yopmail.com', 'minuteinbox.com'
-];
+  const username = document.getElementById("username").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const phone = document.getElementById("phone").value.trim();
+  const password = document.getElementById("password").value;
+  const confirm = document.getElementById("confirm").value;
 
-function clearErrors() {
-  document.querySelectorAll('.input-field').forEach(field => field.classList.remove('error'));
-  document.querySelectorAll('.error-message').forEach(error => error.classList.remove('show'));
-  successMessage.classList.remove('show');
-}
+  if (!username || !email || !phone || !password) {
+    showError("All fields required");
+    return resetBtn();
+  }
 
-function showError(input, errorElement, message) {
-  input.classList.add('error');
-  errorElement.textContent = message;
-  errorElement.classList.add('show');
-}
+  if (!email.endsWith("@gmail.com")) {
+    showError("Only Gmail allowed");
+    return resetBtn();
+  }
 
-function validateUsername(username) {
-  if (username.length < 3) {
-    return 'Username must be at least 3 characters';
+  if (password !== confirm) {
+    showError("Passwords do not match");
+    return resetBtn();
   }
-  if (!/^[a-zA-Z0-9_]+$/.test(username)) {
-    return 'Username can only contain letters, numbers, and underscores';
-  }
-  return null;
-}
 
-function validateEmail(email) {
-  if (!email.endsWith('@gmail.com')) {
-    return 'Only Gmail accounts are allowed';
-  }
-  
-  const emailDomain = email.split('@')[1];
-  if (tempEmailDomains.some(domain => emailDomain.includes(domain))) {
-    return 'Temporary email addresses are not allowed';
-  }
-  
-  return null;
-}
-
-function validatePhone(phone) {
-  const cleanPhone = phone.replace(/[\s\-\(\)]/g, '');
-  
-  if (!/^\d+$/.test(cleanPhone)) {
-    return 'Phone number must contain only digits';
-  }
-  
-  if (cleanPhone.length < 10) {
-    return 'Phone number must be at least 10 digits';
-  }
-  
-  return null;
-}
-
-function validatePassword(password) {
-  if (password.length < 6) {
-    return 'Password must be at least 6 characters';
-  }
-  return null;
-}
-
-signupForm.addEventListener('submit', async function(e) {
-  e.preventDefault();
-  clearErrors();
-  
-  const username = usernameInput.value.trim();
-  const email = emailInput.value.trim();
-  const phone = phoneInput.value.trim();
-  const password = passwordInput.value;
-  const confirmPassword = confirmPasswordInput.value;
-  
-  let hasError = false;
-  
-  const usernameValidation = validateUsername(username);
-  if (usernameValidation) {
-    showError(usernameInput, usernameError, usernameValidation);
-    hasError = true;
-  }
-  
-  const emailValidation = validateEmail(email);
-  if (emailValidation) {
-    showError(emailInput, emailError, emailValidation);
-    hasError = true;
-  }
-  
-  const phoneValidation = validatePhone(phone);
-  if (phoneValidation) {
-    showError(phoneInput, phoneError, phoneValidation);
-    hasError = true;
-  }
-  
-  const passwordValidation = validatePassword(password);
-  if (passwordValidation) {
-    showError(passwordInput, passwordError, passwordValidation);
-    hasError = true;
-  }
-  
-  if (password !== confirmPassword) {
-    showError(confirmPasswordInput, confirmPasswordError, 'Passwords do not match');
-    hasError = true;
-  }
-  
-  if (hasError) {
-    return;
-  }
-  
-  signupBtn.disabled = true;
-  btnText.textContent = 'Creating account...';
-  
   try {
-    const response = await fetch(`${API_BASE_URL}/api/signup`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        username: username,
-        email: email,
-        phone: phone,
-        password: password
-      })
+    const res = await fetch(API + "/signup", {
+      method:"POST",
+      headers:{ "Content-Type":"application/json" },
+      body:JSON.stringify({ username, email, phone, password })
     });
-    
-    const data = await response.json();
-    
-    if (response.ok && data.success) {
-      signupForm.reset();
-      successMessage.classList.add('show');
-    } else {
-      showError(emailInput, emailError, data.message || 'Signup failed');
-    }
-  } catch (error) {
-    showError(emailInput, emailError, 'Network error. Please try again');
-  } finally {
-    signupBtn.disabled = false;
-    btnText.textContent = 'Create Account';
-  }
-});
 
-[usernameInput, emailInput, phoneInput, passwordInput, confirmPasswordInput].forEach(input => {
-  input.addEventListener('input', function() {
-    if (input.classList.contains('error')) {
-      input.classList.remove('error');
-      const errorId = input.id + 'Error';
-      const errorElement = document.getElementById(errorId);
-      if (errorElement) {
-        errorElement.classList.remove('show');
-      }
+    const data = await res.json();
+
+    if (res.ok && data.success) {
+      msg.innerHTML = `<div class="success">Account created. Waiting for admin approval.</div>`;
+    } else {
+      showError(data.message || "Signup failed");
     }
-  });
-});
+
+  } catch(e) {
+    showError("Network error");
+  }
+
+  resetBtn();
+};
+
+function showError(t){
+  msg.innerHTML = `<div class="error">${t}</div>`;
+}
+
+function resetBtn(){
+  btn.disabled = false;
+  btn.innerText = "Create Account";
+}
 </script>
 
 </body>
