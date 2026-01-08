@@ -97,7 +97,7 @@ body::before {
   margin-top: 5px;
 }
 
-.requests-list {
+.users-list {
   background: rgba(10, 14, 39, 0.95);
   border: 2px solid rgba(0, 255, 255, 0.5);
   border-radius: 15px;
@@ -105,67 +105,49 @@ body::before {
   box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
 }
 
-.requests-list h2 {
+.users-list h2 {
   color: #00ffff;
   margin-bottom: 20px;
   text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
 }
 
-.request-card {
+.user-card {
   background: rgba(0, 255, 255, 0.05);
   border: 2px solid rgba(0, 255, 255, 0.3);
   border-radius: 10px;
   padding: 20px;
   margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   transition: all 0.3s ease;
 }
 
-.request-card:hover {
+.user-card:hover {
   border-color: #00ffff;
   background: rgba(0, 255, 255, 0.1);
 }
 
-.request-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 15px;
+.user-info {
+  flex: 1;
 }
 
-.request-type {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  background: rgba(0, 255, 136, 0.2);
-  color: #00ff88;
-  border: 1px solid rgba(0, 255, 136, 0.5);
-}
-
-.request-info {
-  margin-bottom: 15px;
-}
-
-.request-name {
+.user-name {
   font-size: 18px;
   font-weight: bold;
   color: #00ffff;
   margin-bottom: 8px;
 }
 
-.request-details {
+.user-details {
   color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
   margin-bottom: 4px;
 }
 
-.request-actions {
+.user-actions {
   display: flex;
   gap: 10px;
-  flex-wrap: wrap;
 }
 
 .btn-approve {
@@ -216,28 +198,18 @@ body::before {
   font-size: 18px;
 }
 
-.error-message {
-  background: rgba(255, 0, 85, 0.2);
-  border: 2px solid rgba(255, 0, 85, 0.5);
-  border-radius: 10px;
-  padding: 15px;
-  margin-bottom: 20px;
-  color: #ff0055;
-  text-align: center;
-}
-
 @media (max-width: 768px) {
   .stats {
     flex-direction: column;
   }
   
-  .request-header {
+  .user-card {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 15px;
   }
   
-  .request-actions {
+  .user-actions {
     width: 100%;
   }
   
@@ -253,39 +225,36 @@ body::before {
 <div class="container">
   <div class="header">
     <div class="logo-title">WEB GAME ADMIN</div>
-    <div class="page-subtitle">Signup Request Management Dashboard</div>
+    <div class="page-subtitle">User Management Dashboard</div>
   </div>
 
-  <div class="stats">
-    <div class="stat-card">
-      <div class="stat-number" id="totalPending">0</div>
-      <div class="stat-label">Total Pending Requests</div>
+  <div class="users-section show" id="usersSection">
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-number" id="totalPending">0</div>
+        <div class="stat-label">Pending Users</div>
+      </div>
     </div>
-    <div class="stat-card">
-      <div class="stat-number" id="signupCount">0</div>
-      <div class="stat-label">Signup Requests</div>
-    </div>
-  </div>
 
-  <div class="requests-list">
-    <h2>Pending Signup Requests</h2>
-    <div id="requestsList"></div>
+    <div class="users-list">
+      <h2>Pending Approvals</h2>
+      <div id="usersList"></div>
+    </div>
   </div>
 </div>
 
 <script>
-const API_BASE_URL = 'https://web-game-backend-18mn.onrender.com';
+const API_BASE_URL = 'http://localhost:3000';
 const adminToken = 'your-secure-admin-secret-key-change-in-production';
 
-const requestsList = document.getElementById('requestsList');
+const usersList = document.getElementById('usersList');
 const totalPending = document.getElementById('totalPending');
-const signupCount = document.getElementById('signupCount');
 
-loadPendingRequests();
+loadPendingUsers();
 
-async function loadPendingRequests() {
+async function loadPendingUsers() {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/admin/pending-requests`, {
+    const response = await fetch(`${API_BASE_URL}/api/admin/pending-users`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${adminToken}`
@@ -293,130 +262,118 @@ async function loadPendingRequests() {
     });
 
     if (!response.ok) {
-      throw new Error('Failed to fetch requests');
+      throw new Error('Failed to fetch users');
     }
 
     const data = await response.json();
-    
-    // Filter only signup requests
-    const signupRequests = data.requests.filter(r => r.type === 'signup');
-    displayRequests(signupRequests);
+    displayUsers(data.users);
   } catch (error) {
-    console.error('Error loading requests:', error);
-    requestsList.innerHTML = '<div class="error-message">⚠️ Failed to load requests. Please check your connection and try again.</div>';
+    throw error;
   }
 }
 
-function displayRequests(requests) {
-  totalPending.textContent = requests.length;
-  signupCount.textContent = requests.length;
+function displayUsers(users) {
+  totalPending.textContent = users.length;
 
-  if (requests.length === 0) {
-    requestsList.innerHTML = '<div class="empty-state">✅ No pending signup requests</div>';
+  if (users.length === 0) {
+    usersList.innerHTML = '<div class="empty-state">No pending users</div>';
     return;
   }
 
-  requestsList.innerHTML = requests.map(request => {
-    return `
-      <div class="request-card" id="request-${request._id}">
-        <div class="request-header">
-          <span class="request-type">Signup Request</span>
-          <span class="request-details">🕒 ${new Date(request.createdAt).toLocaleString()}</span>
-        </div>
-        <div class="request-info">
-          <div class="request-name">👤 ${escapeHtml(request.username)}</div>
-          ${request.email ? `<div class="request-details">📧 ${escapeHtml(request.email)}</div>` : ''}
-          ${request.phone ? `<div class="request-details">📱 ${escapeHtml(request.phone)}</div>` : ''}
-        </div>
-        <div class="request-actions">
-          <button class="btn-approve" onclick="approveSignup('${request._id}')">✓ Approve Account</button>
-          <button class="btn-reject" onclick="rejectSignup('${request._id}')">✗ Reject Account</button>
-        </div>
+  usersList.innerHTML = users.map(user => `
+    <div class="user-card" id="user-${user._id}">
+      <div class="user-info">
+        <div class="user-name">${escapeHtml(user.username)}</div>
+        <div class="user-details">📧 ${escapeHtml(user.email)}</div>
+        <div class="user-details">📱 ${escapeHtml(user.phone)}</div>
+        <div class="user-details">🕒 ${new Date(user.createdAt).toLocaleString()}</div>
       </div>
-    `;
-  }).join('');
+      <div class="user-actions">
+        <button class="btn-approve" onclick="approveUser('${user._id}')">Approve</button>
+        <button class="btn-reject" onclick="rejectUser('${user._id}')">Reject</button>
+      </div>
+    </div>
+  `).join('');
 }
 
-async function approveSignup(requestId) {
-  const requestCard = document.getElementById(`request-${requestId}`);
-  const buttons = requestCard.querySelectorAll('button');
+async function approveUser(userId) {
+  const userCard = document.getElementById(`user-${userId}`);
+  const buttons = userCard.querySelectorAll('button');
   buttons.forEach(btn => btn.disabled = true);
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/admin/approve-signup`, {
+    const response = await fetch(`${API_BASE_URL}/api/admin/approve-user`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${adminToken}`
       },
-      body: JSON.stringify({ requestId })
+      body: JSON.stringify({ userId })
     });
 
     const data = await response.json();
 
     if (response.ok && data.success) {
-      removeRequestCard(requestCard);
-      alert('✅ Signup approved successfully!');
+      userCard.style.transition = 'all 0.5s ease';
+      userCard.style.opacity = '0';
+      userCard.style.transform = 'scale(0.8)';
+      setTimeout(() => {
+        userCard.remove();
+        updateStats();
+      }, 500);
     } else {
-      throw new Error(data.message || 'Failed to approve signup');
+      throw new Error(data.message);
     }
   } catch (error) {
-    alert('❌ Failed to approve signup: ' + error.message);
+    alert('Failed to approve user: ' + error.message);
     buttons.forEach(btn => btn.disabled = false);
   }
 }
 
-async function rejectSignup(requestId) {
-  if (!confirm('⚠️ Are you sure you want to reject this signup? This will delete the user account permanently.')) {
+async function rejectUser(userId) {
+  if (!confirm('Are you sure you want to reject this user? This will delete their account permanently.')) {
     return;
   }
 
-  const requestCard = document.getElementById(`request-${requestId}`);
-  const buttons = requestCard.querySelectorAll('button');
+  const userCard = document.getElementById(`user-${userId}`);
+  const buttons = userCard.querySelectorAll('button');
   buttons.forEach(btn => btn.disabled = true);
 
   try {
-    const response = await fetch(`${API_BASE_URL}/api/admin/reject-signup`, {
+    const response = await fetch(`${API_BASE_URL}/api/admin/reject-user`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${adminToken}`
       },
-      body: JSON.stringify({ requestId })
+      body: JSON.stringify({ userId })
     });
 
     const data = await response.json();
 
     if (response.ok && data.success) {
-      removeRequestCard(requestCard);
-      alert('✅ Signup rejected successfully!');
+      userCard.style.transition = 'all 0.5s ease';
+      userCard.style.opacity = '0';
+      userCard.style.transform = 'scale(0.8)';
+      setTimeout(() => {
+        userCard.remove();
+        updateStats();
+      }, 500);
     } else {
-      throw new Error(data.message || 'Failed to reject signup');
+      throw new Error(data.message);
     }
   } catch (error) {
-    alert('❌ Failed to reject signup: ' + error.message);
+    alert('Failed to reject user: ' + error.message);
     buttons.forEach(btn => btn.disabled = false);
   }
-}
-
-function removeRequestCard(card) {
-  card.style.transition = 'all 0.5s ease';
-  card.style.opacity = '0';
-  card.style.transform = 'scale(0.8)';
-  setTimeout(() => {
-    card.remove();
-    updateStats();
-  }, 500);
 }
 
 function updateStats() {
-  const remainingRequests = document.querySelectorAll('.request-card').length;
+  const remainingUsers = document.querySelectorAll('.user-card').length;
+  totalPending.textContent = remainingUsers;
   
-  totalPending.textContent = remainingRequests;
-  signupCount.textContent = remainingRequests;
-  
-  if (remainingRequests === 0) {
-    requestsList.innerHTML = '<div class="empty-state">✅ No pending signup requests</div>';
+  if (remainingUsers === 0) {
+    usersList.innerHTML = '<div class="empty-state">No pending users</div>';
   }
 }
 
@@ -431,9 +388,8 @@ function escapeHtml(text) {
   return text.replace(/[&<>"']/g, m => map[m]);
 }
 
-// Auto-refresh every 30 seconds
 setInterval(() => {
-  loadPendingRequests();
+  loadPendingUsers();
 }, 30000);
 </script>
 
