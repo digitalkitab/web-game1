@@ -349,26 +349,6 @@ const authError = document.getElementById('authError');
 const usersList = document.getElementById('usersList');
 const totalPending = document.getElementById('totalPending');
 
-loginBtn.addEventListener('click', async function() {
-  const secret = adminSecretInput.value.trim();
-  
-  if (!secret) {
-    showAuthError('Please enter admin secret key');
-    return;
-  }
-  
-  adminToken = secret;
-  
-  try {
-    await loadPendingUsers();
-    authSection.style.display = 'none';
-    usersSection.classList.add('show');
-  } catch (error) {
-    showAuthError('Invalid admin credentials');
-    adminToken = null;
-  }
-});
-
 function showAuthError(message) {
   authError.textContent = message;
   authError.classList.add('show');
