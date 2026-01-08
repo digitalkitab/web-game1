@@ -69,75 +69,6 @@ body::before {
   font-size: 16px;
 }
 
-.auth-section {
-  background: rgba(10, 14, 39, 0.95);
-  border: 2px solid rgba(0, 255, 255, 0.5);
-  border-radius: 15px;
-  padding: 40px;
-  margin-bottom: 30px;
-  text-align: center;
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.3);
-}
-
-.auth-section h2 {
-  color: #00ffff;
-  margin-bottom: 20px;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-}
-
-.input-field {
-  width: 100%;
-  max-width: 400px;
-  padding: 15px 20px;
-  background: rgba(0, 255, 255, 0.05);
-  border: 2px solid rgba(0, 255, 255, 0.3);
-  border-radius: 10px;
-  color: #fff;
-  font-size: 16px;
-  outline: none;
-  margin-bottom: 20px;
-  transition: all 0.3s ease;
-}
-
-.input-field:focus {
-  border-color: #00ffff;
-  background: rgba(0, 255, 255, 0.1);
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-}
-
-.btn-primary {
-  padding: 12px 30px;
-  background: linear-gradient(45deg, #00ffff, #00ccff);
-  border: none;
-  border-radius: 10px;
-  color: #0a0e27;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.8);
-}
-
-.btn-primary:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.users-section {
-  display: none;
-}
-
-.users-section.show {
-  display: block;
-}
-
 .stats {
   display: flex;
   gap: 20px;
@@ -267,20 +198,6 @@ body::before {
   font-size: 18px;
 }
 
-.error-message {
-  background: rgba(255, 0, 85, 0.1);
-  border: 2px solid rgba(255, 0, 85, 0.5);
-  border-radius: 10px;
-  padding: 15px;
-  color: #ff0055;
-  margin-bottom: 20px;
-  display: none;
-}
-
-.error-message.show {
-  display: block;
-}
-
 @media (max-width: 768px) {
   .stats {
     flex-direction: column;
@@ -311,19 +228,7 @@ body::before {
     <div class="page-subtitle">User Management Dashboard</div>
   </div>
 
-  <div class="auth-section" id="authSection">
-    <h2>Admin Authentication</h2>
-    <div class="error-message" id="authError"></div>
-    <input 
-      type="password" 
-      id="adminSecret" 
-      class="input-field" 
-      placeholder="Enter Admin Secret Key"
-    >
-    <button class="btn-primary" id="loginBtn">Access Dashboard</button>
-  </div>
-
-  <div class="users-section" id="usersSection">
+  <div class="users-section show" id="usersSection">
     <div class="stats">
       <div class="stat-card">
         <div class="stat-number" id="totalPending">0</div>
@@ -339,23 +244,13 @@ body::before {
 </div>
 
 <script>
-let adminToken = null;
+const API_BASE_URL = 'http://localhost:3000';
+const adminToken = 'your-secure-admin-secret-key-change-in-production';
 
-const authSection = document.getElementById('authSection');
-const usersSection = document.getElementById('usersSection');
-const adminSecretInput = document.getElementById('adminSecret');
-const loginBtn = document.getElementById('loginBtn');
-const authError = document.getElementById('authError');
 const usersList = document.getElementById('usersList');
 const totalPending = document.getElementById('totalPending');
 
-function showAuthError(message) {
-  authError.textContent = message;
-  authError.classList.add('show');
-  setTimeout(() => {
-    authError.classList.remove('show');
-  }, 3000);
-}
+loadPendingUsers();
 
 async function loadPendingUsers() {
   try {
@@ -494,9 +389,7 @@ function escapeHtml(text) {
 }
 
 setInterval(() => {
-  if (adminToken && usersSection.classList.contains('show')) {
-    loadPendingUsers();
-  }
+  loadPendingUsers();
 }, 30000);
 </script>
 
