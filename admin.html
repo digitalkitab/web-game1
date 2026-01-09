@@ -1,103 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel - WEB GAME</title>
+<title>WEB GAME ADMIN</title>
 <style>
-/* ==== UI SAME AS TUMHARI FILE ==== */
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Segoe UI',Tahoma;background:#0a0e27;color:#fff;padding:20px}
-.container{max-width:1200px;margin:auto}
-.header{border:2px solid #0ff;border-radius:15px;padding:25px;margin-bottom:25px}
-.logo-title{font-size:30px;color:#0ff;font-weight:bold}
-.stat-card{border:2px solid #0ff;border-radius:12px;padding:20px;text-align:center;margin-bottom:20px}
-.users-list{border:2px solid #0ff;border-radius:12px;padding:20px}
-.user-card{border:1px solid #0ff;border-radius:10px;padding:15px;margin-bottom:15px}
-.btn-approve{background:#00ff88;border:none;padding:8px 15px;border-radius:6px;cursor:pointer}
-.btn-reject{background:#ff0055;border:none;padding:8px 15px;border-radius:6px;cursor:pointer;color:#fff}
+body{background:#0a0e27;color:#fff;font-family:sans-serif;padding:20px}
+.card{border:2px solid cyan;padding:15px;border-radius:10px;margin-bottom:10px}
+button{padding:6px 12px;margin-right:5px}
 </style>
 </head>
-
 <body>
 
-<div class="container">
-  <div class="header">
-    <div class="logo-title">WEB GAME ADMIN</div>
-    <div>User Management Dashboard</div>
-  </div>
+<h2>WEB GAME ADMIN PANEL</h2>
+<p>Signup Requests</p>
 
-  <div class="stat-card">
-    <div id="totalPending">0</div>
-    <div>Pending Signup Requests</div>
-  </div>
-
-  <div class="users-list">
-    <h3>Signup Requests</h3>
-    <div id="usersList"></div>
-  </div>
-</div>
+<div id="list"></div>
 
 <script>
-/* ================= CONFIG ================= */
-const API_BASE_URL = "https://web-game-backend-18mn.onrender.com";
+const API = "https://web-game-backend-18mn.onrender.com";
 
-/* ================= ELEMENTS ================= */
-const usersList = document.getElementById("usersList");
-const totalPending = document.getElementById("totalPending");
+async function load() {
+  const res = await fetch(API + "/admin/signup-requests");
+  const data = await res.json();
 
-/* ================= LOAD REQUESTS ================= */
-async function loadPendingUsers() {
-  try {
-    const res = await fetch(`${API_BASE_URL}/admin/signup-requests`);
-    const users = await res.json();
+  const box = document.getElementById("list");
+  box.innerHTML = "";
 
-    totalPending.textContent = users.length;
-
-    if (users.length === 0) {
-      usersList.innerHTML = "<p>No pending users</p>";
-      return;
-    }
-
-    usersList.innerHTML = users.map(u => `
-      <div class="user-card" id="${u._id}">
-        <b>${u.username}</b><br>
-        📧 ${u.email}<br>
-        📱 ${u.phone}<br><br>
-        <button class="btn-approve" onclick="approve('${u._id}')">Approve</button>
-        <button class="btn-reject" onclick="rejectUser('${u._id}')">Reject</button>
-      </div>
-    `).join("");
-
-  } catch (err) {
-    usersList.innerHTML = "<p>Error loading users</p>";
+  if (data.length === 0) {
+    box.innerHTML = "<p>No pending requests</p>";
+    return;
   }
+
+  data.forEach(u => {
+    box.innerHTML += `
+      <div class="card" id="${u._id}">
+        <b>${u.username}</b><br>
+        ${u.email}<br>
+        ${u.phone}<br><br>
+        <button onclick="approve('${u._id}')">Approve</button>
+        <button onclick="rejectReq('${u._id}')">Reject</button>
+      </div>`;
+  });
 }
 
-/* ================= APPROVE ================= */
 async function approve(id) {
-  await fetch(`${API_BASE_URL}/admin/approve-signup`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id })
+  await fetch(API + "/admin/approve-signup", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({ id })
   });
   document.getElementById(id).remove();
-  loadPendingUsers();
 }
 
-/* ================= REJECT ================= */
-async function rejectUser(id) {
-  await fetch(`${API_BASE_URL}/admin/reject-signup`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ id })
+async function rejectReq(id) {
+  await fetch(API + "/admin/reject-signup", {
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body:JSON.stringify({ id })
   });
   document.getElementById(id).remove();
-  loadPendingUsers();
 }
 
-/* ================= INIT ================= */
-loadPendingUsers();
+load();
 </script>
 
 </body>
