@@ -408,44 +408,48 @@ const usernameError = document.getElementById('usernameError');
 
 signupForm.addEventListener('submit', async function(e) {
   e.preventDefault();
-  
+
   const username = usernameInput.value.trim();
   const password = passwordInput.value.trim();
-  
+
   usernameInput.classList.remove('error');
   usernameError.classList.remove('show');
-  
-  if (password.length < 1) {
+
+  if (!username || !password) {
+    usernameError.textContent = 'Username and password required';
+    usernameError.classList.add('show');
+    usernameInput.classList.add('error');
     return;
   }
-  
+
   signupBtn.disabled = true;
   btnText.textContent = 'Logging in...';
-  
+
   try {
-    const response = await fetch(`${API_BASE_URL}/api/login`, {
+    const response = await fetch(`${API_BASE_URL}/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ 
-        username: username,
-        password: password 
+      body: JSON.stringify({
+        username,
+        password
       })
     });
-    
+
     const data = await response.json();
-    
-    if (response.ok && data.success) {
-      if (data.status === 'approved') {
-        window.location.href = 'home.html';
-      }
+
+    if (data.success) {
+      // ✅ LOGIN SUCCESS
+      window.location.href = 'home.html';
     } else {
-      usernameError.textContent = data.message || 'Invalid username or password';
+      // ❌ LOGIN FAILED / NOT APPROVED
+      usernameError.textContent = data.message || 'Login failed';
       usernameError.classList.add('show');
       usernameInput.classList.add('error');
     }
-  } catch (error) {
+
+  } catch (err) {
     usernameError.textContent = 'Network error. Please try again';
     usernameError.classList.add('show');
     usernameInput.classList.add('error');
@@ -463,5 +467,7 @@ usernameInput.addEventListener('input', function() {
 });
 </script>
 
+
 </body>
 </html>
+
